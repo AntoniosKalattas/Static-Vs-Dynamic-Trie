@@ -27,6 +27,21 @@ public class tree{
         int firstLetter = word.charAt(0) - 'a';
         treeNodes[firstLetter].push(word,1);
     }
+    public boolean isPresent(String s,treeNode root) 
+    {
+    	for(int i=0;i<s.length();i++)
+    	{
+    		
+    		if(Exists(root))
+    		{
+    			
+    		}
+    	}
+    }
+    public boolean isChildren(treeNode root)
+    {
+    	
+    }
 
     public static void main(String args[]){
         tree tr = new tree();
