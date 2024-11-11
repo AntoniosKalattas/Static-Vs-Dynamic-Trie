@@ -34,7 +34,21 @@ public class Trie{
         }
 
     }
-
+    public boolean isPresent(String s,treeNode root) 
+    {
+    	for(int i=0;i<s.length();i++)
+    	{
+    		
+    		if(Exists(root))
+    		{
+    			
+    		}
+    	}
+    }
+    public boolean isChildren(treeNode root)
+    {
+    	
+    }
     public Trie(){
         this.TrieNodes=new TrieNode[numberOfLetters];
         for(int i=0;i<numberOfLetters;i++)
