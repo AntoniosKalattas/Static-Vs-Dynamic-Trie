@@ -13,7 +13,7 @@ public class tree{
             }    
         }
         public void push(String word, int i){
-            int letter = peolouxia.charAt(i) - 'a';
+            int letter = peolodsvuxia.charAt(i) - 'a';
             this.children[letter].push(word,++i);
         }
     }
