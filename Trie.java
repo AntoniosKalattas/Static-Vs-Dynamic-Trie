@@ -11,12 +11,12 @@ public class Trie{
             for(int i=0;i<numberOfLetters;i++)
                 children[i]=null;
         }
-        public void push(String word, int i){
+        public void insert(String word, int i){
             if(i!=word.length()){
                 int letter = word.charAt(i) - 'a';
                 if(this.children[letter]==null)
                     this.children[letter] = new TrieNode();            
-                this.children[letter].push(word,++i);
+                this.children[letter].insert(word,++i);
             }
             else
                 this.wordLength = i;
@@ -51,12 +51,12 @@ public class Trie{
             TrieNodes[i]=null;
     }
 
-    public void push(String word){
+    public void insert(String word){
         int firstLetter = word.charAt(0) - 'a';
         if(TrieNodes[firstLetter]==null){            
             TrieNodes[firstLetter] = new TrieNode();
         }
-        TrieNodes[firstLetter].push(word,1);
+        TrieNodes[firstLetter].insert(word,1);
     }
     
     public boolean isPresent(String word) {
@@ -77,12 +77,12 @@ public class Trie{
 
     public static void main(String args[]){
         Trie tr = new Trie();
-        tr.push("antonios");
+        tr.insert("antonios");
         //tr.display();
-        tr.push("ant");
-        tr.push("gigga");
+        tr.insert("ant");
+        tr.insert("gigga");
         tr.display();
-        String s="jax";
+        String s="a";
         System.out.println(tr.isPresent(s));
     }
 }
