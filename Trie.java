@@ -22,8 +22,7 @@ public class Trie{
                 this.wordLength = i;
             
         }
-        public void display(){
-                
+        public void display(){  
             for(int i=0;i<numberOfLetters;i++){
                 if(children[i]!=null){
                     System.out.print(" "+(char)(i + 'a'));
@@ -33,6 +32,7 @@ public class Trie{
                 }
             }
         }
+
     }
 
     public Trie(){
