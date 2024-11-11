@@ -2,23 +2,21 @@
 
 public class tree{
     private static final int numberOfLetters = 26;
-
+    treeNode[] treeNodes;
     public class treeNode{
-            int wordLength = 0;
+            int wordLength=0;
             treeNode children[];
         public treeNode(){
             children = new treeNode[numberOfLetters];
-            for(int i=0;i<numberOfLetters;i++){
+            for(int i=0;i<numberOfLetters;i++)
                 children[i]=null;
-            }    
         }
         public void push(String word, int i){
-            int letter = peolodsvuxia.charAt(i) - 'a';
+            int letter = word.charAt(i) - 'a';
             this.children[letter].push(word,++i);
         }
     }
 
-    treeNode[] treeNodes;
     public tree(){
         this.treeNodes=new treeNode[numberOfLetters];
         for(int i=0;i<numberOfLetters;i++)
