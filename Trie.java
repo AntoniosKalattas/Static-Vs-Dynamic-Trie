@@ -22,7 +22,8 @@ public class Trie{
                 this.wordLength = i;
             
         }
-        public void display(){  
+        public void display(){
+                
             for(int i=0;i<numberOfLetters;i++){
                 if(children[i]!=null){
                     System.out.print(" "+(char)(i + 'a'));
@@ -32,23 +33,18 @@ public class Trie{
                 }
             }
         }
+        public boolean isPresent(String s,int cnt) {
 
-    }
-    public boolean isPresent(String s,treeNode root) 
-    {
-    	for(int i=0;i<s.length();i++)
-    	{
-    		
-    		if(Exists(root))
-    		{
-    			
-    		}
+    		if(s.length()==cnt)
+    			return true;
+    		if(this.children[s.charAt(cnt)-'a']!=null)
+    			return this.children[s.charAt(cnt)-'a'].isPresent(s,cnt+1);
+    		else
+    			return false;
     	}
     }
-    public boolean isChildren(treeNode root)
-    {
     	
-    }
+    
     public Trie(){
         this.TrieNodes=new TrieNode[numberOfLetters];
         for(int i=0;i<numberOfLetters;i++)
@@ -61,6 +57,12 @@ public class Trie{
             TrieNodes[firstLetter] = new TrieNode();
         }
         TrieNodes[firstLetter].push(word,1);
+    }
+    
+    public boolean isPresent(String word) {
+    	if(TrieNodes[word.charAt(0)-'a']!=null)
+    		return TrieNodes[word.charAt(0)-'a'].isPresent(word, 1);
+    	return false;
     }
 
     public void display(){
@@ -78,6 +80,9 @@ public class Trie{
         tr.push("antonios");
         //tr.display();
         tr.push("ant");
+        tr.push("gigga");
         tr.display();
+        String s="jax";
+        System.out.println(tr.isPresent(s));
     }
 }
