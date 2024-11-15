@@ -34,13 +34,22 @@ public class Trie{
             }
         }
         public boolean isPresent(String s,int cnt) {
-
-    		if(s.length()==cnt)
+            if(s.length()<cnt){
+                System.out.println("1");
+                return false;
+            }
+    		else if(s.length()==cnt && this.wordLength!=0){
+                System.out.println("2");
     			return true;
-    		if(this.children[s.charAt(cnt)-'a']!=null)
-    			return this.children[s.charAt(cnt)-'a'].isPresent(s,cnt+1);
-    		else
+            }
+    		else if(this.children[s.charAt(cnt)-'a']!=null){
+                System.out.println("3");
+    			return this.children[s.charAt(cnt)-'a'].isPresent(s,++cnt);
+            }
+    		else{
+                System.out.println("4 " + cnt + " " + s);
     			return false;
+            }
     	}
     }
     	
@@ -60,8 +69,9 @@ public class Trie{
     }
     
     public boolean isPresent(String word) {
-    	if(TrieNodes[word.charAt(0)-'a']!=null)
-    		return TrieNodes[word.charAt(0)-'a'].isPresent(word, 1);
+    	if(TrieNodes[word.charAt(0)-'a']!=null){
+            return TrieNodes[word.charAt(0)-'a'].isPresent(word, 0);
+        }
     	return false;
     }
 
@@ -82,7 +92,7 @@ public class Trie{
         tr.insert("ant");
         tr.insert("gigga");
         tr.display();
-        String s="a";
+        String s="antt";
         System.out.println(tr.isPresent(s));
     }
 }
