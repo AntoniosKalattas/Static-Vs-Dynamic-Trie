@@ -29,14 +29,14 @@
                 }
             }
 
-            public boolean exist(String word, int i){
+            public boolean search(String word, int i){
                 if(i==word.length() && this.wordLength!=0)
                     return true;
                 else if(i==word.length() && this.wordLength==0){
                     return false;
                 }
                 else if(this.childrenNodes[word.charAt(i)-'a']!=null){
-                    return  this.childrenNodes[word.charAt(i)-'a'].exist(word, ++i);
+                    return  this.childrenNodes[word.charAt(i)-'a'].search(word, ++i);
                 }
                 else{
                     return false;
@@ -48,7 +48,7 @@
                     if(childrenNodes[i]!=null){
                         if(this.wordLength!=0)
                             System.out.print(" @ ");
-                        System.out.print((char)(i+'a')+"");
+                        System.out.print((char)(i+'a')+" ");
                         childrenNodes[i].display();
                     }
                 }
@@ -62,8 +62,8 @@
             node.insert(word, 0);
         }
 
-        public boolean exist(String lookingFor){
-            return node.exist(lookingFor, 0);
+        public boolean search(String lookingFor){
+            return node.search(lookingFor, 0);
         }
 
         public void display(){
@@ -77,6 +77,6 @@
             tr.insert("antonioskalattas");
             tr.display();
             System.out.println();
-            System.out.println(tr.exist("gg"));
+            System.out.println(tr.search("antonios"));
         }
     }
