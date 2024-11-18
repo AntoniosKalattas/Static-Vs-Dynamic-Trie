@@ -1,10 +1,10 @@
 
 
-public class Tri {
+public class Trie {
 
 	public TriNode Root;
 	private int wordlength=0;
-	public Tri()
+	public Trie()
 	{
 		Root=new TriNode();
 	}
@@ -96,7 +96,7 @@ public class Tri {
 	}
 	public static void main(String[]args)
 	{
-		Tri tree=new Tri();
+		Trie tree=new Trie();
 		String s="mourtou";
 		tree.insert("TEsTo");
         tree.insert("TEAM");
