@@ -48,8 +48,7 @@ public class RobinHood {
 	        size++;
 	        return;
 	    }
-
-	    int currentPos = position;
+	    int currentPos =position;
 	    node.psl = 0;
 
 	    for (int probeLength = 0; probeLength < maxProbeLength; probeLength++) {
