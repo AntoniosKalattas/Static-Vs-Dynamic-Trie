@@ -1,142 +1,116 @@
+public class robinhood {
+    int size = 10;
+    int maxColitions=0;
+    RobinHoodeNode array[] = new RobinHoodeNode[size];
+    int currentlyInside=0;
+    public class RobinHoodeNode{
+        int data=0;
+        int offset=0;
+        public RobinHoodeNode(int data){
+            this.data = data;
+            this.offset=0;
+        }
+    }
 
-public class RobinHood {
-	RobinHoodNode table[];
-	public  int capacity;
-	public  int maxProbeLength=5;
-	int size;
-	public RobinHood(int capacity)
-	{
-		this.capacity=capacity;
-		table=new RobinHoodNode[capacity];
-		this.size=0;
-	}
-	public class RobinHoodNode 
-	{
-		public int psl;
-		public int key;
-		
-	public RobinHoodNode(int key)
-	{
-		this.key=key;
-		this.psl=0;
-	}
-	public void setPsl(int psl)
-	{
-		this.psl=psl;
-	}
-	public int getKey(int i)
-	{
-		return table[i].key;
-	}
-	public int getPsl(int i)
-	{
-		return table[i].psl;
-	}
-	}
-	public void insert(int key) {
-	    if (size >= capacity * 0.9) {
-	        rehash();
-	    }
+    public void insert(int data){
+        this.currentlyInside++;
+        if(this.currentlyInside/this.size>=0.9)
+            reHash(size*2);
+        int index=data%size;
+        RobinHoodeNode newElement = new RobinHoodeNode(data);
+        while(array[index]!=null){
+            if(index>=size-1)
+                index=0;
 
-	    int position = key % capacity;
-	    RobinHoodNode node = new RobinHoodNode(key);
-	    
-	    
-	    if (this.table[position] == null) {
-	        node.psl = 0;
-	        table[position] = node;
-	        size++;
-	        return;
-	    }
+            if(array[index].offset<newElement.offset){
+                RobinHoodeNode temp = new RobinHoodeNode(array[index].data);
+                temp.offset = array[index].offset;
+                array[index].data=newElement.data;
+                array[index].offset = newElement.offset;
+                newElement.data = temp.data;
+                newElement.offset = temp.offset;
+                
+            }
+            newElement.offset++;
+            if(maxColitions<newElement.offset){
+                this.maxColitions=newElement.offset;
+                System.out.println("max col is : " + maxColitions);
+            }
+            index++;
+        }
+        this.array[index]=newElement;
+        
+    }
 
-	    int currentPos = position;
-	    node.psl = 0;
+    public void remove(int elementToRemove){
+        int startingIndex = elementToRemove%size;
+        int secondIndex = -1;
+        System.out.println("starting index is: "+ startingIndex);
+        for(int i=startingIndex;i-startingIndex<maxColitions;i++){
+            if(array[i].data==elementToRemove){
+                array[i].data=0;
+                secondIndex =i;
+                break;
+            }
+        }
+        if(secondIndex!=-1){
+            int i=0;
+            for(i=secondIndex; array[i]!=null && (array[i+1]!=null && array[i+1].offset!=0);i++){
+                array[i].data=array[i+1].data;
+                array[i].offset=array[i+1].offset-1;
+                array[i+1].data=0;
+                array[i+1].offset=0;
+            }
+            array[i]=null;
+        }
+        else
+            System.out.println("Element not found");
+    }
 
-	    for (int probeLength = 0; probeLength < maxProbeLength; probeLength++) {
-	        currentPos = (position + probeLength) % capacity;
-	        
-	        if (table[currentPos] == null) {
-	            table[currentPos] = node;
-	            size++;
-	            return;
-	        }
+    public void reHash(int newSize){
+        System.out.println("rehashing");
+        System.out.println("new size is: "+newSize);
+        RobinHoodeNode newArray[] = new RobinHoodeNode[newSize];
+        for(int i=0;i<size;i++){
+            newArray[i]=array[i];
+        }
+        this.size=newSize;
+        this.array=new RobinHoodeNode[newSize];
+        for(int i=0;i<size;i++){
+            if(newArray[i]!=null)
+                this.insert(newArray[i].data);
+        }
+        return;
+    }
 
-	        if (node.psl > table[currentPos].psl) {
-	            RobinHoodNode temp = table[currentPos];
-	            table[currentPos] = node;
-	            node = temp;
-	        }
-	        
-	        node.psl++;
-	    }
-	}
-	public boolean search(int key)
-	{
-		int position=key%capacity;
-		for(int pbLen=0;pbLen<maxProbeLength;pbLen++)
-		{
-			int index=(pbLen+position)%capacity;
-			if(table[index]!=null&&table[index].key==key)
-				return true;
-		}
-		return false;
-	}
-	public void display()
-	{
-		for(int i=0;i<capacity;i++)
-		{
-			if (this.table[i] != null) {
-			    System.out.println("(" + this.table[i].key + "," + this.table[i].psl + ")");
-			} else {
-			    System.out.println("Table index " + i + " is empty.");
-			}		}
-	}
-	
-	public void rehash()
-	{
-		int nextCapacity=0;
-		if(capacity==5)
-		{
-			nextCapacity=11;
-		}
-		else if(capacity==11)
-		{
-			nextCapacity=19;
-		}
-		RobinHood rehash=new RobinHood(nextCapacity);
-		
-		for(int i=0;i<capacity;i++)
-		{
-			if(table[i]!=null)
-				rehash.insert(table[i].key);
-		}
-		this.capacity=rehash.capacity;
-		this.maxProbeLength=rehash.maxProbeLength;
-		this.size=rehash.size;
-		this.table=rehash.table;
-	}
-	
-	
-	
-	
+    public void display(){
+        System.out.println("displaying ----------------------");
+        for(int i=0;i<size;i++){
+            if(array[i]!=null)
+            System.out.println(this.array[i].data + " :: " + array[i].offset);
+            else
+                System.out.println("null");
+        }
+    }
+    
+    public static void main(String[] args) {
+        robinhood rb = new robinhood();
+        rb.insert(10);
+        rb.insert(4);
+        rb.insert(5);
+        rb.insert(2);
+        rb.display();
+        rb.insert(1222);
+        rb.display();
+        rb.insert(142);
+        rb.insert(1);
+        //rb.insert(101);
+        //rb.insert(33);
+        //rb.insert(99);
 
-	public static void main(String[] args)
-	{
-		
-		RobinHood r=new RobinHood(5);
-		r.insert(6);
-		r.insert(16);
-		r.insert(7);
-		r.insert(13);
-		r.insert(27);
-		r.insert(0);
-		r.insert(3);
-		r.insert(4);
-		r.insert(5);
+        rb.display();
 
-		System.out.println(r.search(99));
-		r.display();
-
-	}
-
+        rb.remove(2);
+        rb.display();
+    }
 }
