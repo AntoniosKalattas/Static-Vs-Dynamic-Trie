@@ -37,25 +37,32 @@ public class TrieWithRobinhood {
             this.maxColitions=0;
         }
 
+
+
+        // handles the insert word.
         public void insert(String word, int i){
-            if(word==null)
+            if(word==null)                                              // if word is null because of the filter return.
                 return;
-            if(i==word.length()){
+            if(i==word.length()){                                       // if recursivle we reached the end of the word set the wordLength to the word.leangth() and return.
                 this.wordLength=word.length();
                 return;
             }
 
-            TrieNode temp = new TrieNode(word.charAt(i),this.size);
+            TrieNode temp = new TrieNode(word.charAt(i),this.size);    // create a temp variable that will store the new word current character.
             temp.data=word.charAt(i)-'a';
             temp.offset = 0;
-            int index = (word.charAt(i)-'a') % size;
+
+            int index = (word.charAt(i)-'a') % size;                    // find where should we store the data.
+
+            // DO NOT DELETE. //////////////////////////////////////
             //System.out.println("letter: "+word.charAt(i) + " index is: " + index);
             //if(array[index]!=null){
             //    System.out.println("Collition should occure because there is an lement existing: " + (char)(array[index].data+'a'));
             //}
-            boolean exist = false;
-            int saved_index=0;
-            int saved_offset=0;
+
+            boolean exist = false;                                      // flag used when we have found that the same letter exist so we skip the insertion of that character.
+            int saved_index=0;                                          // incase we swap the character because of the robinhood unfair swap, we will save the index.
+            int saved_offset=0;                                         // for the same reason we will save the offset.
 
             for(int j=0;j<size;j++){
                 if(array[j]!=null && array[j].data==word.charAt(i)-'a'){
@@ -130,19 +137,19 @@ public class TrieWithRobinhood {
             //System.out.println("-------------------------------------------MaxCol: "+ maxColitions);
             array[index].insert(word,++i);
         }
-           
+        // if the items inside the array reach the load factor, it will rehash the table into an array that has 3 more extra spaces.
         public void reHash(){
+            // increase the hash size by 3.
             int newSize = this.size +3;
+            //used for debug DO NOT DELETE
             System.out.println("---------------------------------------------------------------------------------------------------------------reHashing  : " + newSize);
 
             TrieNode newArray[] = new TrieNode[newSize];
-
+            //deep copy for all the element in the array.
             for(int i=0;i<size;i++){
                 if(this.array[i]!=null){
                     int letter = array[i].data;
-                    //System.out.print("letter that I am about to rehash is: " + (char)(letter+'a'));
                     int newPosition = letter % newSize;
-                    //System.out.println(" its new possition is: "+ newPosition);
                     newArray[newPosition] = new TrieNode();
                     newArray[newPosition].data = array[i].data;
                     newArray[newPosition].offset = array[i].offset;
@@ -158,12 +165,16 @@ public class TrieWithRobinhood {
         }
 
         public boolean search(String word, int i){
-            if(word==null || word=="")
+            if(word==null || word=="")                      // check if the word is null or it could be empty because of the filter().
                 return false;
-            if(i==word.length())
+            if(i==word.length())                            // if with the recursion we passed the last character then return if in this position the wordLength is not 0.
                 return this.wordLength!=0;
-            int position = (word.charAt(i)-'a') % size;   
-            boolean flag = false;
+            int position = (word.charAt(i)-'a') % size;     // get the index where we should start looking for.
+            boolean flag = false;                       
+
+
+            // USED FOR DEBBUGING DO NOT DELETE
+
             //System.out.println("maxColitions: "+ maxColitions + "index is ; "+ position + " for charater: "+ ( word.charAt(i) - 'a') + " and size is: "+ this.size);
             //if(array[position]!=null)
             //System.out.println((char)(array[position].data + 'a'));
@@ -173,14 +184,14 @@ public class TrieWithRobinhood {
             //    else
             //        System.out.print(" "+(char)(array[g].data + 'a'));
             //}
-            int j=position;
-            int x=0;
-            while( x <= maxColitions) {
-                if(array[j] != null && array[j].data == word.charAt(i) - 'a') {
-                    flag = true;
-                    return array[j].search(word, i + 1); // Use i + 1 to avoid side effects of ++i
+            int j=position;                                 // counters used for the loop.
+            int x=0;                                        // counters used fot the loop.
+            while(x<= maxColitions){                        // loop for all possible collitions.
+                if(array[j]!= null && array[j].data==word.charAt(i)-'a'){
+                    flag=true;
+                    return array[j].search(word,i+1); // Use i + 1 to avoid side effects of ++i
                 }
-                j = (j + 1) % size; // Move to the next index, wrapping around if necessary
+                j=(j+1)%size; // Move to the next index, wrapping around if necessary
                 x++; // Increment the counter
             }
             return flag;
