@@ -5,6 +5,12 @@ public class TrieWithRobinhood {
     TrieNode root = new TrieNode(-97,5);
     
     public class TrieNode{
+
+        private class prothemata{
+            String word="";
+            int importance=0;
+        }
+
         private static final double LOAD_FACTOR_THRESHOLD = 0.9;
         int wordLength=0;
         int data=0;
@@ -14,6 +20,7 @@ public class TrieWithRobinhood {
         int currentlyInside=0;
         int maxColitions;
         int importance =1;
+        
         
         
         public TrieNode(){
@@ -167,11 +174,11 @@ public class TrieWithRobinhood {
             this.array=newArray;
         }
 
-        public boolean search(String word, int i){
+        public TrieNode search(String word, int i){
             if(word==null || word=="")                      // check if the word is null or it could be empty because of the filter().
-                return false;
+                return null;
             if(i==word.length())                            // if with the recursion we passed the last character then return if in this position the wordLength is not 0.
-                return this.wordLength!=0;
+                return this;
             int position = (word.charAt(i)-'a') % size;     // get the index where we should start looking for.
             boolean flag = false;                       
 
@@ -197,7 +204,10 @@ public class TrieWithRobinhood {
                 j=(j+1)%size; // Move to the next index, wrapping around if necessary
                 x++; // Increment the counter
             }
-            return flag;
+            if(flag==true)
+                return this;
+            else
+                return null;
         }
 
         
@@ -231,8 +241,58 @@ public class TrieWithRobinhood {
             }
         }
 
+        public void prothema(TrieNode CheckPoint, String proth){   
+            if(CheckPoint==null)
+                return;
+            if(CheckPoint.wordLength!=0)             
+                System.out.println(proth);
+            for(int i=0;i<CheckPoint.size;i++)
+                if(CheckPoint.array[i]!=null){
+                    char c=(char)(CheckPoint.array[i].data+'a');
+                    prothema(CheckPoint.array[i],proth+c);
+                }
+        }
 
+        public void prothemaWithTolerance(String word, int i, String proth, int misses){
+            if(i==word.length()){
+                if(wordLength!=0){
+                    System.out.println("Found word: " +proth + " importance is: " + importance);
+                }
+                return;
+            }
+            if(word==null || misses>2) 
+                return;
+            for(int j=0;j<size;j++){
+                if(array[j]!=null){
+                    char c=(char)(array[j].data+'a');
+                    if(array[j].data!=(word.charAt(i)-'a'))
+                        array[j].prothemaWithTolerance(word,i+1,proth+c,misses+1);
 
+                    else
+                        array[j].prothemaWithTolerance(word,i+1,proth+c,misses);
+                }
+            }
+        }
+      
+        public void prothemaWithSizeTolerance(String word, int i, String proth){
+            if(i<word.length()+2){
+                return;
+            }
+            if(wordLength!=0 && i+1==word.length()){
+                System.out.println(proth);
+            }
+            if(i>=word.length() && wordLength!=0){
+                System.out.println(proth);   
+            }
+            for(int j=0;j<size;j++)
+                if(array[j]!=null){
+                    char c=(char)(array[j].data+'a');
+                    if(array[j].data!=word.charAt(i))
+                        prothemaWithSizeTolerance(word, i+1, proth+c);
+                    if(array[j].data==word.charAt(i))
+                        prothemaWithSizeTolerance(word, i+1, proth+c);
+                }
+        }
 
         public int getImportance(String word, int i) {
             if (word == null || word.isEmpty())
@@ -251,7 +311,7 @@ public class TrieWithRobinhood {
             }
             return -1; // Word not found
         }
-
+    
     }
 
     public int getImportance(String word) {
@@ -266,7 +326,11 @@ public class TrieWithRobinhood {
     }
 
     public boolean search(String lookingFor){
-        return root.search(filter(lookingFor),0);
+        TrieNode search =  root.search(filter(lookingFor),0);
+        if(search==null)
+            return false;
+        
+        return search.wordLength!=0;
     }
 
     public void display(){
@@ -282,6 +346,7 @@ public class TrieWithRobinhood {
         filterdWord = filter((word).toLowerCase(), 0);
         return filterdWord;
     }
+    
     public String filter(String word, int i){
         if(i==word.length())
             return "";
@@ -292,7 +357,25 @@ public class TrieWithRobinhood {
     }
     
 
-    public void testCases(){
+    //Prothema wuthout tolerance.
+    public void prothema(String word){
+        TrieNode wordCheckPoint=root.search(word, 0);
+        if(wordCheckPoint!=null)
+            root.prothema(wordCheckPoint, word);
+        else 
+            System.out.println("No words found with prefix: " + word);
+        
+    }
+
+    public void prothemaWithTolerance(String word){
+            root.prothemaWithTolerance(word, 0, "",0 );
+            //System.out.println("No words found with prefix: " + word);
+    }
+    
+    public void prothemaWithSizeTolerance(String word){
+        root.prothemaWithSizeTolerance(word, 0,"");
+    }
+    static public void testCases(){
         TrieWithRobinhood trie = new TrieWithRobinhood();
         
             // Test 1: Basic Insertions and Searches
@@ -527,7 +610,38 @@ public class TrieWithRobinhood {
             }
     }
 
-    public static void main(String[] args) {
+    public static void testCaseProthem(){
+        TrieWithRobinhood trie = new TrieWithRobinhood();
+        trie.insert("plan");
+        trie.insert("plant");
+        trie.insert("plane");
+        trie.insert("plans");
+        trie.insert("planet");
+        trie.insert("planning");
+        trie.insert("plank");
+        trie.insert("play");
+        trie.insert("player");
+        trie.insert("played");
+        trie.insert("playing");
+
+        // Display the trie structure
+        System.out.println("Trie Structure:");
+        trie.display();
+
+        // Test the prothema method with various prefixes
+        System.out.println("\nWords starting with 'plan':");
+        trie.prothema("plan");
+
+        System.out.println("\nWords starting with 'pla':");
+        trie.prothema("pla");
+
+        System.out.println("\nWords starting with 'play':");
+        trie.prothema("play");
+
+        System.out.println("\nWords starting with 'xyz':");
+        trie.prothema("xyz");
+    }
+    public void testCases2Importance(){
         TrieWithRobinhood trie = new TrieWithRobinhood();
 
         // Insert words into the trie.
@@ -558,6 +672,47 @@ public class TrieWithRobinhood {
             }
         }
     }
+    public static void prothemWIthToleranceTestCases(){
+        TrieWithRobinhood trie = new TrieWithRobinhood();
+        trie.insert("play");
+        trie.insert("clan");
+        trie.insert("plum");
+        trie.insert("span");
+        trie.prothemaWithTolerance("plan");
+    }
+    
+    public static void testCaseProthemWithSizeTolerance(){
+        // Create a new instance of the trie
+        TrieWithRobinhood trie = new TrieWithRobinhood();
+
+        // Insert words into the trie
+        trie.insert("cat");
+        trie.insert("cats");
+        trie.insert("cast");
+        trie.insert("castle");
+        trie.insert("cattle");
+        trie.insert("bat");
+        trie.insert("batch");
+        trie.insert("bath");
+        trie.insert("baths");
+        trie.insert("bathroom");
+        trie.insert("rat");
+        trie.insert("rate");
+        trie.insert("rates");
+        trie.insert("rating");
+        trie.insert("rattle");
+
+        // Test words with prothemaWithSizeTolerance
+        String[] testWords = { "cat", "bat", "rat", "bath", "castle", "rattles", "bathtub" };
+
+        for (String word : testWords) {
+            System.out.println("\nWords similar to '" + word + "' within size tolerance:");
+            trie.prothemaWithSizeTolerance(word);
+        }
+    }
         
-     
+    
+    public static void main(String[] args){
+        testCaseProthemWithSizeTolerance();
+    }
 }
