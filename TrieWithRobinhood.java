@@ -13,7 +13,7 @@ public class TrieWithRobinhood {
         TrieNode array[];
         int currentlyInside=0;
         int maxColitions;
-
+        int importance =1;
         
         
         public TrieNode(){
@@ -40,11 +40,13 @@ public class TrieWithRobinhood {
 
 
         // handles the insert word.
-        public void insert(String word, int i){
+        public void insert(String word, int i, boolean existingWord){
             if(word==null)                                              // if word is null because of the filter return.
                 return;
             if(i==word.length()){                                       // if recursivle we reached the end of the word set the wordLength to the word.leangth() and return.
                 this.wordLength=word.length();
+                if(existingWord)
+                    this.importance++;
                 return;
             }
 
@@ -135,7 +137,8 @@ public class TrieWithRobinhood {
                 }
             } 
             //System.out.println("-------------------------------------------MaxCol: "+ maxColitions);
-            array[index].insert(word,++i);
+
+            array[index].insert(word,++i, exist & existingWord);
         }
         // if the items inside the array reach the load factor, it will rehash the table into an array that has 3 more extra spaces.
         public void reHash(){
@@ -201,36 +204,65 @@ public class TrieWithRobinhood {
 
         public void display(String prefix, String childrenPrefix) {
             if (this.data != -97) { // Root node check
-                System.out.println(prefix + (char)(this.data + 'a'));
+                System.out.print(prefix + (char) (this.data + 'a'));
+                if (this.wordLength != 0) {
+                    System.out.print(" (importance: " + this.importance + ")");
+                }
+                System.out.println();
             } else {
                 System.out.println(prefix + "Root");
             }
-        
+
             List<TrieNode> nonNullChildren = new ArrayList<>();
             for (int i = 0; i < size; i++) {
                 if (array[i] != null) {
                     nonNullChildren.add(array[i]);
                 }
             }
-        
+
             int childCount = nonNullChildren.size();
             for (int i = 0; i < childCount; i++) {
                 TrieNode child = nonNullChildren.get(i);
                 boolean isLast = (i == childCount - 1);
-            
+
                 String newPrefix = childrenPrefix + (isLast ? "`-- " : "|-- ");
                 String newChildrenPrefix = childrenPrefix + (isLast ? "    " : "|   ");
                 child.display(newPrefix, newChildrenPrefix);
             }
         }
 
+
+
+
+        public int getImportance(String word, int i) {
+            if (word == null || word.isEmpty())
+                return -1;
+            if (i == word.length())
+                return this.importance;
+            int charIndex = word.charAt(i) - 'a';
+            int index = charIndex % size;
+            int x = 0;
+            while (x <= maxColitions) {
+                if (array[index] != null && array[index].data == charIndex) {
+                    return array[index].getImportance(word, i + 1);
+                }
+                index = (index + 1) % size;
+                x++;
+            }
+            return -1; // Word not found
+        }
+
+    }
+
+    public int getImportance(String word) {
+        return root.getImportance(filter(word), 0);
     }
 
     public void insert(String word){
         if(word==null)
             return;
         String filterdWord = filter(word);
-        root.insert(filterdWord, 0);       
+        root.insert(filterdWord, 0,true);       
     }
 
     public boolean search(String lookingFor){
@@ -258,9 +290,10 @@ public class TrieWithRobinhood {
         else
             return "" + filter(word, ++i);
     }
-        
-        public static void main(String[] args) {
-            TrieWithRobinhood trie = new TrieWithRobinhood();
+    
+
+    public void testCases(){
+        TrieWithRobinhood trie = new TrieWithRobinhood();
         
             // Test 1: Basic Insertions and Searches
             System.out.println("Test 1: Basic Insertions and Searches");
@@ -492,7 +525,39 @@ public class TrieWithRobinhood {
             for (String word : words14) {
                 System.out.println("Search '" + word + "': " + trie.search(word));
             }
+    }
+
+    public static void main(String[] args) {
+        TrieWithRobinhood trie = new TrieWithRobinhood();
+
+        // Insert words into the trie.
+        trie.insert("hello");
+        trie.insert("world");
+        trie.insert("hello");
+        trie.insert("help");
+        trie.insert("world");
+        trie.insert("help");
+        trie.insert("hello");
+        trie.insert("test");
+        trie.insert("test");
+        trie.insert("testing");
+
+        // Display the trie structure along with importance values.
+        trie.display();
+
+        // Test the importance variable.
+        String[] words = { "hello", "world", "help", "test", "testing", "unknown" };
+
+        System.out.println("\nWord Importance Values:");
+        for (String word : words) {
+            int importance = trie.getImportance(word);
+            if (importance != -1) {
+                System.out.println("Word: " + word + ", Importance: " + importance);
+            } else {
+                System.out.println("Word: " + word + " not found in trie.");
+            }
         }
+    }
         
      
 }
