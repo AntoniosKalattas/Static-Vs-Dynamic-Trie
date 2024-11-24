@@ -5,12 +5,6 @@
         TrieNode root = new TrieNode(-97,5);
         
         public class TrieNode{
-
-            private class prothemata{
-                String word="";
-                int importance=0;
-            }
-
             private static final double LOAD_FACTOR_THRESHOLD = 0.9;
             int wordLength=0;
             int data=0;
