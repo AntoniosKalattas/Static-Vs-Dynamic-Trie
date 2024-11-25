@@ -6,11 +6,11 @@
         
         public class TrieNode{
             private static final double LOAD_FACTOR_THRESHOLD = 0.9;
-            int wordLength=0;
-            int data=0;
+            int wordLength=0;           
+            int data=0;                //the charecter that represents.
             int offset=0;
             int size;
-            TrieNode array[];
+            TrieNode array[];           // all of its sub-tries.
             int currentlyInside=0;
             int maxCollitions;
             int importance =1;
@@ -37,7 +37,7 @@
                 this.array=new TrieNode[size];
                 this.maxCollitions=0;
             }
-
+            // this method will return a deep copy of its, given argument.
             public TrieNode deepCopy(TrieNode source) {
                 if(source==null) return null;
             
@@ -85,35 +85,36 @@
                 //}
 
                 boolean exist = false;                                      // flag used when we have found that the same letter exist so we skip the insertion of that character.
-                boolean swap = false;
+                boolean swap = false;                                        // we use swap flag so when we will swap we will store the index of the first swap in the savedIndex. So in the nest insertion we will move from there.
                 int savedIndex=0;
                 int savedOffset=0;
-
+                // loop thtough the entire array in case the character exist. -------------------------------------------------change it to i<maxCOl.
                 for(int j=index;j<size;j++){                                    // search trie in case the character exist.
                     if(array[j]!=null && array[j].data==word.charAt(i)-'a'){
                         index = j;
                         exist=true;
                     }
                 }
-                if(!exist){
-                    this.currentlyInside++;
+                if(!exist){                                                // if the character does not exist.
+                    this.currentlyInside++;                                // increase the counter that countrs how many letters are inside.
 
-                    if((double) currentlyInside/size>LOAD_FACTOR_THRESHOLD){
+                    if((double) currentlyInside/size>LOAD_FACTOR_THRESHOLD){    // if by inserting this letter we will pass the LFT that means we need to refactor and then reHash().
                         reHash();
                     }  
-                    index = (word.charAt(i)-'a') % size;
-                    while(array[index]!=null){
-                        if(array[index].data==(word.charAt(i)-'a')){
+                    index = (word.charAt(i)-'a') % size;                        // re-calculate the index that we need to position the new element.
+                    while(array[index]!=null){                                    // loop until you find a null position. because then we will just assing the new element there.
+                        if(array[index].data==(word.charAt(i)-'a')){                //////////////////////////////////////////////////////////----------------------------------------------------------------------probably remove it.
                             exist=true;
                             break;
                         }
-                        if(array[index].offset<temp.offset){
-                            if(!swap){
+                        if(array[index].offset<temp.offset){                    // if the current inside elemnt has a bigger offset than the one that we are moving aroung -> swap them and start moving that around the array until you find a null pointer.
+                            if(!swap){                                          // if its the first time you are swaping, store that index, in the saveindex because in the nest recursive call you need to go from there.
                                 swap=true;
                                 savedIndex=  index;
                                 savedOffset= offset;
                             }
                             //System.out.println("about to swap the letter: " + (char)(array[index].data+'a') + " with the letter: " + (char)(temp.data+'a'));
+                            // swaping procedure.
                             TrieNode tempNode = deepCopy(array[index]);
                             array[index] = deepCopy(temp);
                             temp = deepCopy(tempNode);
@@ -125,25 +126,25 @@
 
                             //System.out.println("now I hold the letter: " + (char)(temp.data+'a'));
                         }
-
-                        index=(index+1)%size;
-                        temp.offset++;
-                        if(temp.offset>maxCollitions){
+                        
+                        index=(index+1)%size;                             // increase the index++.
+                        temp.offset++;                                    // increase the offset of the object we are curently moving around.
+                        if(temp.offset>maxCollitions){                    // check if the currently object offset is bigger than the maxCollition .
                             maxCollitions=temp.offset;
                         }
                     }
                     
-                    array[index] = deepCopy(temp);
+                    array[index] = deepCopy(temp);                        // because array[index] is a null position, that means we need to assing it to the  element we moved arround.
                 } 
-                if(swap==false){
+                if(swap==false){                                          // if we didn't swap the elements that means the index!=0 and savedIndex =0. so we need to make savedIndex = index.
                     savedIndex = index;
                 }   
                 //System.out.println("-------------------------------------------MaxCol: "+ maxCollitions);
-                if(!exist){
+                if(!exist){    ///////--------------------------------------------------------------------------------------------------------------------probably remove.
                     array[savedIndex] = new TrieNode(word.charAt(i)-'a',5);
                     array[savedIndex].offset = savedOffset;
                 }
-                array[savedIndex].insert(word,i+1, exist & existingWord);
+                array[savedIndex].insert(word,i+1, exist & existingWord);    // recursive call to the savedIndex. where the new insertion occure.
             }
             // if the items inside the array reach the load factor, it will rehash the table into an array that has 3 more extra spaces.
             public void reHash(){
@@ -165,7 +166,8 @@
                 this.size = newSize;
                 this.array=newArray;
             }
-
+            // This will search the try using the optimal robinhood search method, it will return the end of that word. 
+            // For example if we are searching for the word: PLAN, if it exist, the search() will return the pointer to the letter l, if not it will return the null pointer.
             public TrieNode search(String word, int i){
                 if(word==null || word=="")                      // check if the word is null or it could be empty because of the filter().
                     return null;
@@ -173,10 +175,7 @@
                     return this;
                 int position = (word.charAt(i)-'a') % size;     // get the index where we should start looking for.
                 boolean flag = false;                       
-
-
                 // USED FOR DEBBUGING DO NOT DELETE
-
                 //System.out.println("maxCollitions: "+ maxCollitions + "index is ; "+ position + " for charater: "+ ( word.charAt(i) - 'a') + " and size is: "+ this.size);
                 //if(array[position]!=null)
                 //System.out.println((char)(array[position].data + 'a'));
@@ -368,7 +367,7 @@
         public void display(){
             root.display("" , "");
         }
-        
+        // Filter will filter out the unwanted characters. filter(String) will remove the non ascii characters ,where filter(String, Int) will remove the characters that are not letters.
         public String filter(String word){
             if(word==null)
                 return "";
