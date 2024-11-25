@@ -79,9 +79,13 @@
                 if(word==null)                                              // if word is null because of the filter return.
                     return;
                 if(i==word.length()){                                       // if recursivle we reached the end of the word set the wordLength to the word.leangth() and return.
-                    this.wordLength=word.length();
-                    if(existingWord)
-                        this.importance++;
+                    if(this.wordLength==0){
+                        this.wordLength=word.length();
+                        
+                    }
+                    else
+                        if(existingWord)
+                            this.importance++;
                     return;
                 }
 
@@ -100,12 +104,17 @@
                 boolean swap = false;                                        // we use swap flag so when we will swap we will store the index of the first swap in the savedIndex. So in the nest insertion we will move from there.
                 int savedIndex=0;
                 int savedOffset=0;
-                // loop thtough the entire array in case the character exist. -------------------------------------------------change it to i<maxCOl.
-                for(int j=index;j<size;j++){                                    // search trie in case the character exist.
-                    if(array[j]!=null && array[j].element.data==word.charAt(i)-'a'){
-                        index = j;
+                /// loop counters
+                int loopIndex = index;
+                int j=0;
+                while(j<=maxCollitions){
+                                                   // search trie in case the character exist.
+                    if(array[loopIndex]!=null && array[loopIndex].element.data==word.charAt(i)-'a'){
+                        index = loopIndex;
                         exist=true;
                     }
+                    j++;
+                    loopIndex=(loopIndex+1)%size;
                 }
                 if(!exist){                                                // if the character does not exist.
                     this.currentlyInside++;                                // increase the counter that countrs how many letters are inside.
@@ -115,10 +124,11 @@
                     }  
                     index = (word.charAt(i)-'a') % size;                        // re-calculate the index that we need to position the new element.
                     while(array[index]!=null){                                    // loop until you find a null position. because then we will just assing the new element there.
-                        if(array[index].element.data==(word.charAt(i)-'a')){                //////////////////////////////////////////////////////////----------------------------------------------------------------------probably remove it.
-                            exist=true;
-                            break;
-                        }
+                        //probablty remove it . 
+                        //if(array[index].element.data==(word.charAt(i)-'a')){                //////////////////////////////////////////////////////////----------------------------------------------------------------------probably remove it.
+                        //    exist=true;
+                        //    break;
+                        //}
                         if(array[index].element.offset<temp.element.offset){                    // if the current inside elemnt has a bigger offset than the one that we are moving aroung -> swap them and start moving that around the array until you find a null pointer.
                             if(!swap){                                          // if its the first time you are swaping, store that index, in the saveindex because in the nest recursive call you need to go from there.
                                 swap=true;
@@ -152,10 +162,10 @@
                     savedIndex = index;
                 }   
                 //System.out.println("-------------------------------------------MaxCol: "+ maxCollitions);
-                if(!exist){    ///////--------------------------------------------------------------------------------------------------------------------probably remove.
-                    array[savedIndex] = new TrieNode(word.charAt(i)-'a',5);
-                    array[savedIndex].element.offset = savedOffset;
-                }
+                //if(!exist){    ///////--------------------------------------------------------------------------------------------------------------------probably remove.
+                //    array[savedIndex] = new TrieNode(word.charAt(i)-'a',5);
+                //    array[savedIndex].element.offset = savedOffset;
+                //}
                 array[savedIndex].insert(word,i+1, exist & existingWord);    // recursive call to the savedIndex. where the new insertion occure.
             }
             // if the items inside the array reach the load factor, it will rehash the table into an array that has 3 more extra spaces.
