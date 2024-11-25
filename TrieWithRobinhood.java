@@ -4,35 +4,47 @@
     public class TrieWithRobinhood {
         TrieNode root = new TrieNode(-97,5);
         
+        public class Element{
+            int data;                   //the charecter that represents.
+            int offset;
+
+            public Element(int data){
+                this.data = data;
+            }
+            
+        }
+
         public class TrieNode{
             private static final double LOAD_FACTOR_THRESHOLD = 0.9;
             int wordLength=0;           
-            int data=0;                //the charecter that represents.
-            int offset=0;
+            //int data=0;                
+            //int offset=0;
             int size;
             TrieNode array[];           // all of its sub-tries.
             int currentlyInside=0;
             int maxCollitions;
             int importance =1;
-            
+            Element element;
             
             
             public TrieNode(){
-                this.data=0;
+                element = new Element(0);
+                this.element.data=0;
                 this.size=10;
                 this.array=new TrieNode[this.size];
                 this.maxCollitions=0;
             }
 
             public TrieNode(int size){
-                this.data=0;
+                element = new Element(0);
+                this.element.data=0;
                 this.size=size;
                 this.array = new TrieNode[size];
                 this.maxCollitions=0;
             }
 
             public TrieNode(int data, int size){
-                this.data = data;
+                element = new Element(data);
                 this.size=size;
                 this.array=new TrieNode[size];
                 this.maxCollitions=0;
@@ -41,8 +53,8 @@
             public TrieNode deepCopy(TrieNode source) {
                 if(source==null) return null;
             
-                TrieNode tr = new TrieNode(source.data, source.size);
-                tr.offset = source.offset;
+                TrieNode tr = new TrieNode(source.element.data, source.size);
+                tr.element.offset = source.element.offset;
                 tr.wordLength = source.wordLength;
                 tr.importance = source.importance;
                 tr.maxCollitions = source.maxCollitions;
@@ -74,7 +86,7 @@
                 }
 
                 TrieNode temp = new TrieNode(word.charAt(i)-'a',this.size);    // create a temp variable that will store the new word current character.
-                temp.offset = 0;
+                temp.element.offset = 0;
 
                 int index = (word.charAt(i)-'a') % size;                    // find where should we store the data.
 
@@ -90,7 +102,7 @@
                 int savedOffset=0;
                 // loop thtough the entire array in case the character exist. -------------------------------------------------change it to i<maxCOl.
                 for(int j=index;j<size;j++){                                    // search trie in case the character exist.
-                    if(array[j]!=null && array[j].data==word.charAt(i)-'a'){
+                    if(array[j]!=null && array[j].element.data==word.charAt(i)-'a'){
                         index = j;
                         exist=true;
                     }
@@ -103,15 +115,15 @@
                     }  
                     index = (word.charAt(i)-'a') % size;                        // re-calculate the index that we need to position the new element.
                     while(array[index]!=null){                                    // loop until you find a null position. because then we will just assing the new element there.
-                        if(array[index].data==(word.charAt(i)-'a')){                //////////////////////////////////////////////////////////----------------------------------------------------------------------probably remove it.
+                        if(array[index].element.data==(word.charAt(i)-'a')){                //////////////////////////////////////////////////////////----------------------------------------------------------------------probably remove it.
                             exist=true;
                             break;
                         }
-                        if(array[index].offset<temp.offset){                    // if the current inside elemnt has a bigger offset than the one that we are moving aroung -> swap them and start moving that around the array until you find a null pointer.
+                        if(array[index].element.offset<temp.element.offset){                    // if the current inside elemnt has a bigger offset than the one that we are moving aroung -> swap them and start moving that around the array until you find a null pointer.
                             if(!swap){                                          // if its the first time you are swaping, store that index, in the saveindex because in the nest recursive call you need to go from there.
                                 swap=true;
                                 savedIndex=  index;
-                                savedOffset= offset;
+                                savedOffset= element.offset;
                             }
                             //System.out.println("about to swap the letter: " + (char)(array[index].data+'a') + " with the letter: " + (char)(temp.data+'a'));
                             // swaping procedure.
@@ -128,9 +140,9 @@
                         }
                         
                         index=(index+1)%size;                             // increase the index++.
-                        temp.offset++;                                    // increase the offset of the object we are curently moving around.
-                        if(temp.offset>maxCollitions){                    // check if the currently object offset is bigger than the maxCollition .
-                            maxCollitions=temp.offset;
+                        temp.element.offset++;                                    // increase the offset of the object we are curently moving around.
+                        if(temp.element.offset>maxCollitions){                    // check if the currently object offset is bigger than the maxCollition .
+                            maxCollitions=temp.element.offset;
                         }
                     }
                     
@@ -142,7 +154,7 @@
                 //System.out.println("-------------------------------------------MaxCol: "+ maxCollitions);
                 if(!exist){    ///////--------------------------------------------------------------------------------------------------------------------probably remove.
                     array[savedIndex] = new TrieNode(word.charAt(i)-'a',5);
-                    array[savedIndex].offset = savedOffset;
+                    array[savedIndex].element.offset = savedOffset;
                 }
                 array[savedIndex].insert(word,i+1, exist & existingWord);    // recursive call to the savedIndex. where the new insertion occure.
             }
@@ -157,7 +169,7 @@
                 //deep copy for all the element in the array.
                 for(int i=0;i<size;i++){
                     if(this.array[i]!=null){
-                        int letter = array[i].data;
+                        int letter = array[i].element.data;
                         int newPosition = letter % newSize;
                         newArray[newPosition] = new TrieNode();
                         newArray[newPosition] = deepCopy(array[i]);
@@ -188,7 +200,7 @@
                 int j=position;                                 // counters used for the loop.
                 int x=0;                                        // counters used fot the loop.
                 while(x<= maxCollitions){                        // loop for all possible collitions.
-                    if(array[j]!= null && array[j].data==word.charAt(i)-'a'){
+                    if(array[j]!= null && array[j].element.data==word.charAt(i)-'a'){
                         flag=true;
                         return array[j].search(word,i+1); // Use i + 1 to avoid side effects of ++i
                     }
@@ -203,8 +215,8 @@
 
 
             public void display(String prefix, String childrenPrefix) {
-                if (this.data != -97) { // Root node check
-                    System.out.print(prefix + (char) (this.data + 'a'));
+                if (this.element.data != -97) { // Root node check
+                    System.out.print(prefix + (char) (this.element.data + 'a'));
                     if (this.wordLength != 0) {
                         System.out.print(" (importance: " + this.importance + ")");
                     }
@@ -239,7 +251,7 @@
                     System.out.println(proth);
                 for(int i=0;i<CheckPoint.size;i++)
                     if(CheckPoint.array[i]!=null){
-                        char c=(char)(CheckPoint.array[i].data+'a');
+                        char c=(char)(CheckPoint.array[i].element.data+'a');
                         prothema(CheckPoint.array[i],proth+c);
                     }
             }
@@ -255,8 +267,8 @@
                     return;
                 for(int j=0;j<size;j++){
                     if(array[j]!=null){
-                        char c=(char)(array[j].data+'a');
-                        if(array[j].data!=(word.charAt(i)-'a'))
+                        char c=(char)(array[j].element.data+'a');
+                        if(array[j].element.data!=(word.charAt(i)-'a'))
                             array[j].prothemaWithTolerance(word,i+1,proth+c,misses+1);
 
                         else
@@ -287,10 +299,10 @@
                 if(i<word.length()) 
                     for(int j=0;j<size;j++){
                         if(array[j]!=null){
-                            char c = (char)(array[j].data+'a');
-                            if(array[j].data!=word.charAt(i)-'a')
+                            char c = (char)(array[j].element.data+'a');
+                            if(array[j].element.data!=word.charAt(i)-'a')
                                 array[j].prothemataWithBiggerSize(word, i, proth+c, miss+1, false);
-                            if(array[j].data==word.charAt(i)-'a')
+                            if(array[j].element.data==word.charAt(i)-'a')
                                     array[j].prothemataWithBiggerSize(word, i+1, proth+c, miss,true);
                         }
                     }
@@ -298,7 +310,7 @@
                     //System.out.println("f4");
                     for(int j=0;j<size;j++){
                         if(array[j]!=null){
-                            char c = (char)(array[j].data+'a');
+                            char c = (char)(array[j].element.data+'a');
                             array[j].prothemataWithBiggerSize(word, i+1, proth+c, miss, true);
                         }
                     }
@@ -317,9 +329,9 @@
                 for(int j=prevIndex;j<size;j++){
                     if(array[j]!=null){
                             char c =(char)(word.charAt(i)-'a');
-                            if(array[j].data!=c)
+                            if(array[j].element.data!=c)
                                 prothemaWithSmallerSize(word, i+1, miss+1, proth,j ,false);
-                            if(array[j].data==c)
+                            if(array[j].element.data==c)
                                 array[j].prothemaWithSmallerSize(word, i+1, miss,(proth+(char)(c+'a')),0,true);
                     }
                 }
@@ -334,7 +346,7 @@
                 int index = charIndex % size;
                 int x = 0;
                 while (x <= maxCollitions) {
-                    if (array[index] != null && array[index].data == charIndex) {
+                    if (array[index] != null && array[index].element.data == charIndex) {
                         return array[index].getImportance(word, i + 1);
                     }
                     index = (index + 1) % size;
@@ -407,7 +419,6 @@
             root.prothemaWithSizeTolerance(word, 0,"");
         }
     
-        public static void main(String[] args){
-
+        public static void main(String[] args){  
         }
     }
