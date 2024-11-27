@@ -3,7 +3,7 @@
 
     public class TrieWithRobinhood {
         TrieNode root = new TrieNode(-97,5);
-        Heap heap = new Heap(5); /////////////////////////////////////////////////////////
+        Heap heap = new Heap(25); /////////////////////////////////////////////////////////
         
         public class Element{
             int data;                   //the charecter that represents.
@@ -18,8 +18,6 @@
         public class TrieNode{
             private static final double LOAD_FACTOR_THRESHOLD = 0.9;
             int wordLength=0;           
-            //int data=0;                
-            //int offset=0;
             int size;
             TrieNode array[];           // all of its sub-tries.
             int currentlyInside=0;
@@ -80,10 +78,8 @@
                 if(word==null)                                              // if word is null because of the filter return.
                     return;
                 if(i==word.length()){                                       // if recursivle we reached the end of the word set the wordLength to the word.leangth() and return.
-                    if(this.wordLength==0){
+                    if(this.wordLength==0)
                         this.wordLength=word.length();
-                        
-                    }
                     else
                         if(existingWord)
                             this.importance++;
@@ -93,7 +89,7 @@
                 TrieNode temp = new TrieNode(word.charAt(i)-'a',this.size);    // create a temp variable that will store the new word current character.
                 temp.element.offset = 0;
 
-                int index = (word.charAt(i)-'a') % size;                    // find where should we store the data.
+                int index = (word.charAt(i)-'a')%size;                    // find where should we store the data.
 
                 // DO NOT DELETE. //////////////////////////////////////
                 //System.out.println("letter: "+word.charAt(i) + " index is: " + index);
@@ -109,7 +105,7 @@
                 int loopIndex = index;
                 int j=0;
                 while(j<=maxCollitions){
-                                                   // search trie in case the character exist.
+                    // search trie in case the character exist.
                     if(array[loopIndex]!=null && array[loopIndex].element.data==word.charAt(i)-'a'){
                         index = loopIndex;
                         exist=true;
@@ -152,16 +148,14 @@
                         
                         index=(index+1)%size;                             // increase the index++.
                         temp.element.offset++;                                    // increase the offset of the object we are curently moving around.
-                        if(temp.element.offset>maxCollitions){                    // check if the currently object offset is bigger than the maxCollition .
+                        if(temp.element.offset>maxCollitions)                    // check if the currently object offset is bigger than the maxCollition .
                             maxCollitions=temp.element.offset;
-                        }
                     }
                     
                     array[index] = deepCopy(temp);                        // because array[index] is a null position, that means we need to assing it to the  element we moved arround.
                 } 
-                if(swap==false){                                          // if we didn't swap the elements that means the index!=0 and savedIndex =0. so we need to make savedIndex = index.
+                if(swap==false)                                          // if we didn't swap the elements that means the index!=0 and savedIndex =0. so we need to make savedIndex = index.
                     savedIndex = index;
-                }   
                 //System.out.println("-------------------------------------------MaxCol: "+ maxCollitions);
                 //if(!exist){    ///////--------------------------------------------------------------------------------------------------------------------probably remove.
                 //    array[savedIndex] = new TrieNode(word.charAt(i)-'a',5);
@@ -258,9 +252,12 @@
             public void prothema(TrieNode CheckPoint, String proth){   
                 if(CheckPoint==null)
                     return;
-                if(CheckPoint.wordLength!=0)             
-                    System.out.println(proth);
-                    Heap.Thing thing = heap.new Thing(proth, importance);
+                if(CheckPoint.wordLength!=0){             
+                    System.out.println(proth + " with importance: "+CheckPoint.importance);
+                    Heap.Thing thing = heap.new Thing(proth, CheckPoint.importance);
+                    heap.insert(thing);
+                    //heap.displayHeap();
+                }
                 for(int i=0;i<CheckPoint.size;i++)
                     if(CheckPoint.array[i]!=null){
                         char c=(char)(CheckPoint.array[i].element.data+'a');
@@ -303,6 +300,7 @@
                 if(wordLength>word.length() && wordLength<=word.length()+2 && change){
                     System.out.println(proth);
                     Heap.Thing thing = heap.new Thing(proth, importance);
+                    heap.insert(thing);
                 }
                 if(i>word.length()+2){
                     return;
@@ -367,6 +365,16 @@
                 return -1; // Word not found
             }
         
+            public void pushToHeap(String word){
+                if(wordLength!=0){
+                    Heap.Thing thing = heap.new Thing(word, importance);
+                    heap.insert(thing);
+                }
+                
+                for(int i=0;i<size;i++)
+                    if(array[i]!=null)
+                        array[i].pushToHeap(word + (char)(array[i].element.data+'a'));
+            }
         }
 
         public int getImportance(String word) {
@@ -376,7 +384,8 @@
         public void insert(String word){
             if(word==null)
                 return;
-            String filterdWord = filter(word);
+            String filterdWord = filter(word.toLowerCase());
+            System.out.println(filterdWord);
             root.insert(filterdWord, 0,true);       
         }
 
@@ -392,24 +401,22 @@
             root.display("" , "");
         }
         // Filter will filter out the unwanted characters. filter(String) will remove the non ascii characters ,where filter(String, Int) will remove the characters that are not letters.
-        public String filter(String word){
-            if(word==null)
-                return null;
-            String filterdWord = word.replaceAll("[^\\x00-\\x7F]", "");
-            if(word.equals(filterdWord)==false)
-                return null;
-            filterdWord = filter((word).toLowerCase(), 0);
-            return filterdWord;
-        }
-        
-        public String filter(String word, int i){
-            if(i==word.length())
-                return "";
-            if(word.charAt(i)>='a' && word.charAt(i)<='z')
-                return word.charAt(i) + filter(word, ++i);
-            else
-                return "" + filter(word, ++i);
-        }
+        public String filter(String word) {
+            String newWord = "";
+      
+            for(int i = 0; i < word.length(); ++i) {
+               if ((word.charAt(i)=='.' || word.charAt(i)=='-') && i != word.length() - 1) {
+                  return null;
+               }
+      
+               if (word.charAt(i)>='a' && word.charAt(i)<='z') {
+                  newWord = newWord + word.charAt(i);
+               }
+               
+            }
+      
+            return newWord;
+         }
         
 
         //Prothema wuthout tolerance.
@@ -431,6 +438,9 @@
             root.prothemaWithSizeTolerance(word, 0,"");
         }
     
+        public void pushToHeap(){
+            root.pushToHeap("");
+        }
         public static void main(String[] args){  
         }
     }

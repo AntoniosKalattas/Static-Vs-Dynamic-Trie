@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 
 public class testingTrieWithRH {
     public static void testCasesAdvance(){
@@ -246,11 +248,25 @@ public class testingTrieWithRH {
     public static void testCaseProthem(){
         TrieWithRobinhood trie = new TrieWithRobinhood();
         trie.insert("plan");
+        trie.insert("plan");
+
         trie.insert("plant");
+        trie.insert("plant");
+        
         trie.insert("plane");
+        trie.insert("plane");
+        trie.insert("plane");
+        trie.insert("plane");
+        trie.insert("plane");
+
         trie.insert("plans");
         trie.insert("planet");
+        trie.insert("planet");
+
         trie.insert("planning");
+        trie.insert("planning");
+        trie.insert("planning");
+
         trie.insert("plank");
         trie.insert("play");
         trie.insert("player");
@@ -264,15 +280,15 @@ public class testingTrieWithRH {
         // Test the prothema method with various prefixes
         System.out.println("\nWords starting with 'plan':");
         trie.prothema("plan");
-
-        System.out.println("\nWords starting with 'pla':");
-        trie.prothema("pla");
-
-        System.out.println("\nWords starting with 'play':");
-        trie.prothema("play");
-
-        System.out.println("\nWords starting with 'xyz':");
-        trie.prothema("xyz");
+        trie.heap.displayHeapAsTree();
+        //System.out.println("\nWords starting with 'pla':");
+        //trie.prothema("pla");
+//
+        //System.out.println("\nWords starting with 'play':");
+        //trie.prothema("play");
+//
+        //System.out.println("\nWords starting with 'xyz':");
+        //trie.prothema("xyz");
     }
     public void testCases2Importance(){
         TrieWithRobinhood trie = new TrieWithRobinhood();
@@ -312,6 +328,8 @@ public class testingTrieWithRH {
         trie.insert("plum");
         trie.insert("span");
         trie.prothemaWithTolerance("plan");
+        trie.display();
+        trie.heap.displayHeapAsTree();
     }
     
     public static void testCaseProthemWithSizeTolerance(){
@@ -378,9 +396,13 @@ public class testingTrieWithRH {
         System.out.println(tr.search("ant"));
     }
     public static void main(String[] args) {
-        currentTesting();
-    
-        //testCaseProthemWithSizeTolerance();
-        //basic();
+        TrieWithRobinhood trie = new TrieWithRobinhood();
+        Scanner scan = new Scanner(System.in);
+        while(scan.hasNextLine()){
+            trie.insert(scan.next());;
+        }
+        trie.display();
+        trie.pushToHeap();
+        trie.heap.displayHeapAsTree();
     }
 }
