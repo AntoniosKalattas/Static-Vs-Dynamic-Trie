@@ -260,6 +260,7 @@
                     return;
                 if(CheckPoint.wordLength!=0)             
                     System.out.println(proth);
+                    Heap.Thing thing = heap.new Thing(proth, importance);
                 for(int i=0;i<CheckPoint.size;i++)
                     if(CheckPoint.array[i]!=null){
                         char c=(char)(CheckPoint.array[i].element.data+'a');
@@ -297,15 +298,13 @@
             }
             public void prothemataWithBiggerSize(String word, int i, String proth, int miss, boolean change){
                 if(miss>2){
-                    //System.out.println("f1");
                     return;
                 }
                 if(wordLength>word.length() && wordLength<=word.length()+2 && change){
-                    //System.out.println("f2");
                     System.out.println(proth);
+                    Heap.Thing thing = heap.new Thing(proth, importance);
                 }
                 if(i>word.length()+2){
-                //System.out.println("f3");
                     return;
                 }
                 if(i<word.length()) 
@@ -319,7 +318,6 @@
                         }
                     }
                 if(i>=word.length()){
-                    //System.out.println("f4");
                     for(int j=0;j<size;j++){
                         if(array[j]!=null){
                             char c = (char)(array[j].element.data+'a');
@@ -332,8 +330,10 @@
             public void prothemaWithSmallerSize(String word, int i, int miss, String proth, int prevIndex, boolean change){
                 if(miss>1)
                     return;
-                if(wordLength!=0)
+                if(wordLength!=0){
                     System.out.println(proth);
+                    Heap.Thing thing = heap.new Thing(proth, importance);
+                }
                 if(i==word.length())
                     return;
                 
@@ -394,7 +394,7 @@
         // Filter will filter out the unwanted characters. filter(String) will remove the non ascii characters ,where filter(String, Int) will remove the characters that are not letters.
         public String filter(String word){
             if(word==null)
-                return "";
+                return null;
             String filterdWord = word.replaceAll("[^\\x00-\\x7F]", "");
             if(word.equals(filterdWord)==false)
                 return null;
