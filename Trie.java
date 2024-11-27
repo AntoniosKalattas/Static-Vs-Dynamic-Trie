@@ -6,10 +6,10 @@ public class Trie {
     }
 
     public class TrieNode{
-
         public final int numberOfLetters = 26;
         private int wordLength=0;
         private TrieNode childrenNodes[];
+        private int importance=1;
 
         public TrieNode(){
             childrenNodes = new TrieNode[numberOfLetters];
@@ -25,6 +25,8 @@ public class Trie {
                 this.childrenNodes[letter].insert(word,++i);
             }
             else{
+                if(wordLength!=0)
+                    importance++;
                 this.wordLength = i;
             }
         }
@@ -32,29 +34,22 @@ public class Trie {
         public boolean search(String word, int i){
             if(i==word.length() && this.wordLength!=0)
                 return true;
-            else if(i==word.length() && this.wordLength==0){
+            else if(i==word.length() && this.wordLength==0)
                 return false;
-            }
-            else if(this.childrenNodes[word.charAt(i)-'a']!=null){
+            else if(this.childrenNodes[word.charAt(i)-'a']!=null)
                 return  this.childrenNodes[word.charAt(i)-'a'].search(word, ++i);
-            }
-            else{
+            else
                 return false;
-            }
         }
 
-        public void display(){
-            for(int i=0;i<numberOfLetters;i++){
-                if(childrenNodes[i]!=null){
-                    if(this.wordLength!=0)
-                        System.out.print(" @ ");
-                    System.out.print((char)(i+'a')+" ");
-                    childrenNodes[i].display();
-                }
-            }
+        public void display(String prefix){
+            if(this.wordLength!=0)
+                System.out.println(prefix+" (importance: "+importance+")");
+            for(int i=0;i<numberOfLetters;i++)
+                if(childrenNodes[i]!=null)
+                    childrenNodes[i].display(prefix+(char)(i+'a'));
         }
-
-
+        
     }
 
 
@@ -67,7 +62,7 @@ public class Trie {
     }
 
     public void display(){
-        node.display();
+        node.display("");
     }
 
     public static void main(String[] args) {
@@ -75,6 +70,7 @@ public class Trie {
         tr.insert("antonios");
         tr.insert("gg");
         tr.insert("antonioskalattas");
+        tr.insert("gg");
         tr.display();
         System.out.println();
         System.out.println(tr.search("An"));

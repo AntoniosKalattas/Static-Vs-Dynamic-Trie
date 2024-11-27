@@ -3,6 +3,7 @@
 
     public class TrieWithRobinhood {
         TrieNode root = new TrieNode(-97,5);
+        Heap heap = new Heap(5); /////////////////////////////////////////////////////////
         
         public class Element{
             int data;                   //the charecter that represents.
@@ -270,6 +271,7 @@
                 if(i==word.length()){
                     if(wordLength!=0){
                         System.out.println("Found word: " +proth + " importance is: " + importance);
+                        Heap.Thing thing = heap.new Thing(proth, importance);
                     }
                     return;
                 }
