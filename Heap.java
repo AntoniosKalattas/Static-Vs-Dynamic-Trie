@@ -2,16 +2,23 @@
 public class Heap {
 	
 	Thing arr[];
-	int size=0;
-	public Heap(int n)
+	public Heap(int k)
 	{
-		arr=new Thing[n];
+		arr=new Thing[k+1];
+		this.arr[0]=new Thing("CurrentSize",0);
 		
+		
+		for(int i=1;i<=k;i++)
+		{
+			this.arr[i]=new Thing("",-1);
+		}
+
 	}
 	public class Thing
 	{
 		String word;
 		int importance;
+		
 		public Thing(String word,int importance)
 		{
 			this.word=word;
@@ -22,87 +29,98 @@ public class Heap {
 	public static void PercolateDown(Thing A[], int n, int i) {
 	    Thing temp = A[i]; // Store the element to be moved down
 	    int j;
-	    while (2 * i + 1 < n) { // Note: 0-based indexing
-	        // Find min child
-	        j = 2 * i + 1; // Left child
-	        if (j + 1 < n && A[j + 1].importance < A[j].importance) {
+	    while (2 * i <= n) { // 1-based indexing
+	        j = 2 * i; // Left child
+	        if (j + 1 <= n && A[j + 1].importance < A[j].importance) {
 	            j++; // Right child is smaller
 	        }
-	        // Move the smaller child up if it violates the min-heap
 	        if (temp.importance > A[j].importance) {
 	            A[i] = A[j];
 	            i = j;
 	        } else {
-	            break; // No more violations
+	            break;
 	        }
 	    }
 	    A[i] = temp; // Place the original element in its correct position
 	}
 
+
 	public static void BuildHeap(Thing A[], int n) {
 		for (int i = n / 2; i > 0; i--)
 		PercolateDown(A, n, i);
 		}
-	public void findKLargest(int k)
+	
+	
+	
+	
+	public void displayHeap()
 	{
-		BuildHeap(this.arr,k);
-		for(int i=k;i<this.arr.length;i++)
+		for(int i=0;i<this.arr[0].importance+1;i++)
 		{
-			if(arr[i].importance>arr[0].importance)
-			{
-				arr[0]=arr[i];
-				PercolateDown(arr,k,0);
-			}
+			System.out.println("Word: "+arr[i].word+", Importance: "+arr[i].importance);
 		}
 	}
-	/*
-	public void insert(Thing k) {
-		if (this.size < this.maxsize)
+	
+	public void insert(Thing thing) {
+		
+		if (this.arr[0].importance<this.arr.length-1)
 		{
-		int index = this.size + 1;
-		while (index > 1 && this.contents[(index / 2)] > k) {
-		this.contents[index] = this.contents[(index / 2)];
+			
+		int index = this.arr[0].importance + 1;
+		while (index > 1 && this.arr[(index / 2)].importance >thing.importance) {
+		this.arr[index].importance=this.arr[(index / 2)].importance;
+		this.arr[index].word=this.arr[(index / 2)].word;
+
 		index = index / 2;
 		}
-		this.contents[index] = k;
-		this.size++;
-		this.contents[0] = this.size;
+		this.arr[index]=thing;
+		this.arr[0].importance++;
+		
 		}
+		
+		else if(this.arr[0].importance==arr.length-1) 
+		{
+			if(thing.importance>arr[1].importance)
+			{
+				arr[1]=thing;
+				PercolateDown(this.arr,this.arr[0].importance,1);
+				
+			}
 		}
-		*/
+		
+	
+	}
+		
+	
 	public boolean isEmpty()
 	{
 		return this.arr[0]==null;
 	}
 	public static void main(String[] args) {
-        // Create a heap object with capacity 10
-        Heap heap = new Heap(10);
-        
-        // Populate the heap's array with sample data
-        heap.arr = new Heap.Thing[] {
-            heap.new Thing("A", 3),
-            heap.new Thing("B", 1),
-            heap.new Thing("C", 6),
-            heap.new Thing("D", 5),
-            heap.new Thing("E", 9),
-            heap.new Thing("F", 8),
-            heap.new Thing("G", 7),
-            heap.new Thing("H", 4),
-            heap.new Thing("I", 10),
-            heap.new Thing("J", 2)
-        };
-        
-        // Set the size of the heap (number of elements)
-        heap.size = heap.arr.length;
-        
-        // Find the 3 largest elements
-        int k = 3;
-        heap.findKLargest(k);
-        
-        // Print the k-largest elements
-        System.out.println("The " + k + "-largest elements are:");
-        for (int i = 0; i < k; i++) {
-            System.out.println("Word: " + heap.arr[i].word + ", Importance: " + heap.arr[i].importance);
-        }
-    }
+	    // Initialize the Heap with capacity for 5 elements
+	    int k = 5;
+	    Heap heap = new Heap(k);
+
+	    // Step 2: Insert 50 non-random words with varying importance
+	    String[] words = {
+	        "Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape", "Honeydew",
+	        "IndianFig", "Jackfruit", "Kiwi", "Lemon", "Mango", "Nectarine", "Orange",
+	        "Papaya", "Quince", "Raspberry", "Strawberry", "Tangerine", "UgliFruit",
+	        "Vanilla", "Watermelon", "Xigua", "YellowPassionFruit", "Zucchini",
+	        "Apricot", "Blackberry", "Cranberry", "Dragonfruit", "Eggfruit", "Feijoa",
+	        "Guava", "Hackberry", "IceCreamBean", "Jujube", "Kumquat", "Lychee",
+	        "Mulberry", "Nance", "Olive", "Peach", "Quandong", "Rambutan", "Salak",
+	        "Tamarind", "Umbu", "Voavanga", "WaxApple", "YamBean", "Ziziphus"
+	    };
+
+	    // Assign importance values (simple pattern for testing)
+	    for (int i = 0; i < 50; i++) {
+	        heap.insert(heap.new Thing(words[i],i + 1)); // Importance = index + 1
+	    }
+
+	    // Step 3: Display the contents of the heap
+	    System.out.println("Heap contents after 50 insertions:");
+	    heap.displayHeap();
+	}
+
 }
