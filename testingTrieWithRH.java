@@ -364,9 +364,23 @@ public class testingTrieWithRH {
          trie.prothemaWithSizeTolerance("plan");
          System.out.println("prothemata testing: plan");
     }
+    public static void basic(){
+        TrieWithRobinhood tr = new TrieWithRobinhood();
+        tr.insert("antonios");
+        tr.insert("ant");
+        tr.insert("antreas");
+        tr.insert("kalattas");
+        tr.insert("antonios");
+        tr.insert("john");
+        tr.insert("john");
+
+        tr.display();
+        System.out.println(tr.search("ant"));
+    }
     public static void main(String[] args) {
         currentTesting();
     
         //testCaseProthemWithSizeTolerance();
+        //basic();
     }
 }
