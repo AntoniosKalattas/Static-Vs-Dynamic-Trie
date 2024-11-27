@@ -1,3 +1,4 @@
+import java.util.Scanner;
 public class Trie {
     TrieNode node;
 
@@ -18,6 +19,8 @@ public class Trie {
         }
 
         public void insert(String word, int i){
+            if(word==null)
+                return;
             if(i!=word.length()){
                 int letter = word.charAt(i) - 'a';
                 if(this.childrenNodes[letter]==null)
@@ -54,7 +57,8 @@ public class Trie {
 
 
     public void insert(String word){
-        node.insert((word).toLowerCase(), 0);
+
+        node.insert(filter((word).toLowerCase()), 0);
     }
 
     public boolean search(String lookingFor){
@@ -65,14 +69,25 @@ public class Trie {
         node.display("");
     }
 
-    public static void main(String[] args) {
+    public String filter(String word) {
+        String newWord = "";
+  
+        for(int i = 0; i < word.length(); ++i) {
+           if ((word.charAt(i)=='.' || word.charAt(i)=='-') && i != word.length() - 1)
+              return null;  
+           if (word.charAt(i)>='a' && word.charAt(i)<='z') {
+              newWord = newWord + word.charAt(i);
+           }
+           
+        }
+  
+        return newWord;
+     }
+    public static void main(String[] args){
         Trie tr = new Trie();
-        tr.insert("antonios");
-        tr.insert("gg");
-        tr.insert("antonioskalattas");
-        tr.insert("gg");
+        Scanner scan = new Scanner(System.in);
+        while(scan.hasNextLine())
+            tr.insert(scan.next());
         tr.display();
-        System.out.println();
-        System.out.println(tr.search("An"));
     }
 }
