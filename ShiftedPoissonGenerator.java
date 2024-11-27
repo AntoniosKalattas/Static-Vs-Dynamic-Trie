@@ -1,4 +1,3 @@
-package Randomize;
 import java.util.Random;
 
 public class ShiftedPoissonGenerator {

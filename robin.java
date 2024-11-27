@@ -1,4 +1,4 @@
-public class robinhood {
+public class robin {
     int size = 10;
     int maxColitions=0;
     RobinHoodeNode array[] = new RobinHoodeNode[size];
@@ -94,7 +94,7 @@ public class robinhood {
     }
     
     public static void main(String[] args) {
-        robinhood rb = new robinhood();
+        robin rb = new robin();
         rb.insert(10);
         rb.insert(4);
         rb.insert(5);
