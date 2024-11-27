@@ -1,4 +1,4 @@
-public class robinhood {
+public class RobinHood {
     int size = 10;
     int maxColitions=0;
     RobinHoodeNode array[] = new RobinHoodeNode[size];

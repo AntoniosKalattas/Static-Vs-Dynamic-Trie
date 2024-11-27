@@ -55,7 +55,21 @@ public class Heap {
 			}
 		}
 	}
-	
+	/*
+	public void insert(Thing k) {
+		if (this.size < this.maxsize)
+		{
+		int index = this.size + 1;
+		while (index > 1 && this.contents[(index / 2)] > k) {
+		this.contents[index] = this.contents[(index / 2)];
+		index = index / 2;
+		}
+		this.contents[index] = k;
+		this.size++;
+		this.contents[0] = this.size;
+		}
+		}
+		*/
 	public boolean isEmpty()
 	{
 		return this.arr[0]==null;
