@@ -1,16 +1,20 @@
+package trie;
+
 import java.util.Scanner;
+
 public class Trie {
     TrieNode node;
-
+    static int cnt=0;
+    
     public Trie(){
         this.node = new TrieNode();
     }
-
-    public class TrieNode{
+    	public class TrieNode{
         public final int numberOfLetters = 26;
         private int wordLength=0;
         private TrieNode childrenNodes[];
         private int importance=1;
+        
 
         public TrieNode(){
             childrenNodes = new TrieNode[numberOfLetters];
@@ -19,13 +23,20 @@ public class Trie {
         }
 
         public void insert(String word, int i){
-            if(word==null)
-                return;
+        	if(word==null)
+        		return;
             if(i!=word.length()){
                 int letter = word.charAt(i) - 'a';
+                char currentChar = word.charAt(i);
+                if (currentChar < 'a' || currentChar > 'z') {
+                    throw new IllegalArgumentException("Invalid character in word: " + currentChar);
+                }
                 if(this.childrenNodes[letter]==null)
-                    this.childrenNodes[letter] = new TrieNode();            
-                this.childrenNodes[letter].insert(word,++i);
+                {
+                    this.childrenNodes[letter] = new TrieNode();
+                    cnt++;
+                }
+                this.childrenNodes[letter].insert(word, i + 1);
             }
             else{
                 if(wordLength!=0)
@@ -57,7 +68,6 @@ public class Trie {
 
 
     public void insert(String word){
-
         node.insert(filter((word).toLowerCase()), 0);
     }
 
@@ -68,7 +78,8 @@ public class Trie {
     public void display(){
         node.display("");
     }
-
+    
+    
     public String filter(String word) {
         String newWord = "";
   
@@ -83,11 +94,13 @@ public class Trie {
   
         return newWord;
      }
+     
     public static void main(String[] args){
         Trie tr = new Trie();
         Scanner scan = new Scanner(System.in);
         while(scan.hasNextLine())
             tr.insert(scan.next());
         tr.display();
+        System.out.println("Total memory consumed"+cnt*232);
     }
 }
