@@ -1,6 +1,8 @@
     import java.util.ArrayList;
     import java.util.List;
 
+
+
     public class TrieWithRobinhood {
         TrieNode root = new TrieNode(-97,5);
         Heap heap = new Heap(25); /////////////////////////////////////////////////////////
@@ -24,6 +26,7 @@
             int maxCollitions;
             int importance =1;
             Element element;
+            static int totalObj = 0;
             
             
             public TrieNode(){
@@ -165,8 +168,16 @@
             }
             // if the items inside the array reach the load factor, it will rehash the table into an array that has 3 more extra spaces.
             public void reHash(){
-                // increase the hash size by 3.
-                int newSize = this.size +3;
+                int newSize=0;
+
+                if(size==5) 
+                    newSize =11;
+                if(size==11)
+                    newSize = 19;
+                if(size==19)
+                    newSize = 29; 
+                if(size>29)
+                    newSize = size+5;
                 //used for debug DO NOT DELETE
                 System.out.println("---------------------------------------------------------------------------------------------------------------reHashing  : " + newSize);
 
@@ -375,6 +386,15 @@
                     if(array[i]!=null)
                         array[i].pushToHeap(word + (char)(array[i].element.data+'a'));
             }
+
+            public int calculateMemory(){
+                totalObj+=this.size;
+                for(int i=0;i<size;i++){
+                    if(array[i]!=null)
+                        array[i].calculateMemory();
+                }
+                return totalObj;
+            }
         }
 
         public int getImportance(String word) {
@@ -401,22 +421,18 @@
             root.display("" , "");
         }
         // Filter will filter out the unwanted characters. filter(String) will remove the non ascii characters ,where filter(String, Int) will remove the characters that are not letters.
-        public String filter(String word) {
+        public String filter(String word){
             String newWord = "";
       
             for(int i = 0; i < word.length(); ++i) {
-               if ((word.charAt(i)=='.' || word.charAt(i)=='-') && i != word.length() - 1) {
+               if ((word.charAt(i)=='.' || word.charAt(i)=='-') && i!= word.length()-1)
                   return null;
-               }
-      
-               if (word.charAt(i)>='a' && word.charAt(i)<='z') {
-                  newWord = newWord + word.charAt(i);
-               }
-               
+               if (word.charAt(i)>='a' && word.charAt(i)<='z')
+                  newWord = newWord+word.charAt(i);
             }
       
             return newWord;
-         }
+        }
         
 
         //Prothema wuthout tolerance.
@@ -437,10 +453,20 @@
         public void prothemaWithSizeTolerance(String word){
             root.prothemaWithSizeTolerance(word, 0,"");
         }
-    
+        
+        public void calculateMemory(){
+            int totalObjs = root.calculateMemory(); 
+            System.out.println(totalObjs);
+        }
+
         public void pushToHeap(){
             root.pushToHeap("");
         }
         public static void main(String[] args){  
+            var runtime = Runtime.getRuntime();
+            var total  = runtime.totalMemory();
+            var free =runtime.freeMemory();
+            var usedMem = total-free;
+            System.out.printf("Total " + total + "\t free " + free + "\t usedMem: " + usedMem);
         }
     }

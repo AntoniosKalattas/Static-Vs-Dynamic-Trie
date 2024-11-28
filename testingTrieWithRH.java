@@ -396,6 +396,8 @@ public class testingTrieWithRH {
         System.out.println(tr.search("ant"));
     }
     public static void main(String[] args) {
+        var runtime = Runtime.getRuntime();
+            
         TrieWithRobinhood trie = new TrieWithRobinhood();
         Scanner scan = new Scanner(System.in);
         while(scan.hasNextLine()){
@@ -404,5 +406,10 @@ public class testingTrieWithRH {
         trie.display();
         trie.pushToHeap();
         trie.heap.displayHeapAsTree();
+        trie.calculateMemory();
+        var total  = runtime.totalMemory();
+        var free =runtime.freeMemory();
+        var usedMem = total-free;
+        System.out.printf("Total " + total + "\t free " + free + "\t usedMem: " + usedMem);
     }
 }
