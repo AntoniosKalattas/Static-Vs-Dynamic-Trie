@@ -5,7 +5,7 @@
 
     public class TrieWithRobinhood {
         TrieNode root = new TrieNode(-97,5);
-        Heap heap = new Heap(25); /////////////////////////////////////////////////////////
+        Heap heap = new Heap(5); /////////////////////////////////////////////////////////
         
         public class Element{   // 8 bytes
             int data;                   //the charecter that represents.
@@ -265,7 +265,7 @@
                 if(CheckPoint==null)
                     return;
                 if(CheckPoint.wordLength!=0){             
-                    System.out.println(proth + " with importance: "+CheckPoint.importance);
+                    //System.out.println(proth + " with importance: "+CheckPoint.importance);
                     Heap.Thing thing = heap.new Thing(proth, CheckPoint.importance);
                     heap.insert(thing);
                     //heap.displayHeap();
@@ -280,8 +280,9 @@
             public void prothemaWithTolerance(String word, int i, String proth, int misses){
                 if(i==word.length()){
                     if(wordLength!=0){
-                        System.out.println("Found word: " +proth + " importance is: " + importance);
+                        //System.out.println("Found word: " +proth + " importance is: " + importance);
                         Heap.Thing thing = heap.new Thing(proth, importance);
+                        heap.insert(thing);
                     }
                     return;
                 }
@@ -300,9 +301,9 @@
             }
         
             public void prothemaWithSizeTolerance(String word, int i, String proth){
-                System.out.println("Smaller words: ");
+                //System.out.println("Smaller words: ");
                 prothemaWithSmallerSize(word, 0, 0, "",0,true);
-                System.out.println("Bigger words: ");
+                //System.out.println("Bigger words: ");
                 prothemataWithBiggerSize(word, 0, "", 0,true);
             }
             public void prothemataWithBiggerSize(String word, int i, String proth, int miss, boolean change){
@@ -310,7 +311,7 @@
                     return;
                 }
                 if(wordLength>word.length() && wordLength<=word.length()+2 && change){
-                    System.out.println(proth);
+                    //System.out.println(proth);
                     Heap.Thing thing = heap.new Thing(proth, importance);
                     heap.insert(thing);
                 }
@@ -341,8 +342,9 @@
                 if(miss>1)
                     return;
                 if(wordLength!=0){
-                    System.out.println(proth);
+                    //System.out.println(proth);
                     Heap.Thing thing = heap.new Thing(proth, importance);
+                    heap.insert(thing);
                 }
                 if(i==word.length())
                     return;
@@ -407,7 +409,7 @@
             if(word==null)
                 return;
             String filterdWord = filter(word.toLowerCase());
-            System.out.println(filterdWord);
+            //System.out.println(filterdWord);
             root.insert(filterdWord, 0,true);       
         }
 
@@ -463,6 +465,10 @@
 
         public void pushToHeap(){
             root.pushToHeap("");
+        }
+
+        public void displayHeap(){
+            heap.displayHeapAsTree();
         }
         public static void main(String[] args){  
             

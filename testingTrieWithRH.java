@@ -396,20 +396,64 @@ public class testingTrieWithRH {
         System.out.println(tr.search("ant"));
     }
     public static void main(String[] args) {
-        var runtime = Runtime.getRuntime();
+        //var runtime = Runtime.getRuntime();
             
         TrieWithRobinhood trie = new TrieWithRobinhood();
-        Scanner scan = new Scanner(System.in);
-        while(scan.hasNextLine()){
-            trie.insert(scan.next());;
-        }
-        trie.display();
-        trie.pushToHeap();
-        trie.heap.displayHeapAsTree();
-        trie.calculateMemory();
-        var total  = runtime.totalMemory();
-        var free =runtime.freeMemory();
-        var usedMem = total-free;
-        System.out.printf("Total " + total + "\t free " + free + "\t usedMem: " + usedMem);
+        //Scanner scan = new Scanner(System.in);
+        //while(scan.hasNextLine()){
+        //    trie.insert(scan.next());;
+        //}
+        //trie.display();
+        //trie.pushToHeap();
+        //trie.heap.displayHeapAsTree();
+        //trie.calculateMemory();
+        //var total  = runtime.totalMemory();
+        //var free =runtime.freeMemory();
+        //var usedMem = total-free;
+        //System.out.printf("Total " + total + "\t free " + free + "\t usedMem: " + usedMem);
+
+        trie.insert("plant");
+        trie.insert("plant");
+        trie.insert("plane");
+        trie.insert("plans");
+        trie.insert("plans");
+        trie.insert("plans");
+        trie.insert("plans");
+        trie.insert("plans");
+        trie.insert("play");
+
+        trie.insert("plans");
+        trie.insert("plans");
+        trie.insert("plans");
+        trie.insert("plans");
+        trie.insert("planet");
+        trie.insert("plank");
+        trie.insert("planning");
+        trie.insert("planning");
+        trie.insert("planning");
+        trie.insert("clan");
+        trie.insert("plum");
+        trie.insert("plum");
+        trie.insert("span");
+        trie.insert("lan");
+        trie.insert("pan");
+        trie.insert("planet");
+        trie.insert("planner");
+        trie.insert("planner");
+        trie.insert("plains");
+        trie.insert("planner");
+        trie.insert("aplans");
+        trie.prothemaWithTolerance("plan");
+        trie.displayHeap();
+        System.out.println();
+
+        trie.prothemaWithSizeTolerance("plan");
+        trie.displayHeap();
+        System.out.println();
+//
+//
+        trie.prothema("plan");
+        trie.displayHeap();
+        
     }
 }

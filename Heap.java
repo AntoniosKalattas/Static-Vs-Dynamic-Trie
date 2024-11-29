@@ -2,25 +2,18 @@
 public class Heap {
 	
 	Thing arr[];
-	public Heap(int k)
-	{
+	public Heap(int k){
 		arr=new Thing[k+1];
 		this.arr[0]=new Thing("CurrentSize",0);
-		
-		
 		for(int i=1;i<=k;i++)
-		{
 			this.arr[i]=new Thing("",-1);
-		}
 
 	}
-	public class Thing
-	{
+	public class Thing{
 		String word;
 		int importance;
 		
-		public Thing(String word,int importance)
-		{
+		public Thing(String word,int importance){
 			this.word=word;
 			this.importance=importance;
 		}
@@ -54,60 +47,9 @@ public class Heap {
 	
 	
 		public void displayHeapAsTree() {
-			if (this.arr[0].importance == 0) {
-				System.out.println("Heap is empty.");
-				return;
-			}
-			int n = this.arr[0].importance;
-			int height = (int) (Math.log(n) / Math.log(2)) + 1; // Calculate tree height
-		
-			// Determine the maximum length of a node's text representation
-			int maxNodeWidth = 0;
-			for (int i = 1; i <= n; i++) {
-				String nodeText = arr[i].word + "(" + arr[i].importance + ")";
-				maxNodeWidth = Math.max(maxNodeWidth, nodeText.length());
-			}
-		
-			// Tree width per level
-			int maxWidth = (int) Math.pow(2, height - 1) * maxNodeWidth * 2;
-		
-			for (int level = 0; level < height; level++) {
-				int nodesInLevel = (int) Math.pow(2, level);
-				int spaceBetween = maxWidth / nodesInLevel - maxNodeWidth;
-		
-				// Print leading spaces
-				System.out.print(" ".repeat(spaceBetween / 2));
-		
-				// Print nodes in the current level
-				for (int i = 0; i < nodesInLevel; i++) {
-					int index = (int) Math.pow(2, level) + i;
-					if (index > n) break;
-		
-					String nodeText = arr[index].word + "(" + arr[index].importance + ")";
-					System.out.print(nodeText);
-		
-					// Space between nodes
-					if (i < nodesInLevel - 1) {
-						System.out.print(" ".repeat(spaceBetween));
-					}
-				}
-				System.out.println(); // Move to the next level
-		
-				// Print branches if not the last level
-				if (level < height - 1) {
-					int branchSpacing = spaceBetween / 2 - 1;
-					int branches = nodesInLevel * 2;
-		
-					// Print leading spaces for branches
-					System.out.print(" ".repeat(branchSpacing + maxNodeWidth / 2));
-					for (int i = 0; i < branches; i++) {
-						System.out.print(i % 2 == 0 ? "/" : "\\");
-						if (i < branches - 1) {
-							System.out.print(" ".repeat(branchSpacing * 2 + maxNodeWidth));
-						}
-					}
-					System.out.println();
-				}
+			for(int i=1;i<arr.length;i++){
+				if(arr[i].importance!=-1)
+				System.out.printf ("%s [%d]\n",arr[i].word,arr[i].importance);
 			}
 		}
 		
