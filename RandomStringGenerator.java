@@ -18,9 +18,10 @@ public class RandomStringGenerator {
 			
 		}
 		
-		public static void main(String[]args)
-		{
-			int length=5;
-			System.out.println(WordGenerator(length));
+		public static void main(String[]args){
+			ShiftedPoissonGenerator generator = new ShiftedPoissonGenerator(6.94); // Mean word length
+			for(int i=0;i<100;i++){
+				System.out.println(WordGenerator(generator.nextShiftedPoisson()));
+			}
 		}
 }

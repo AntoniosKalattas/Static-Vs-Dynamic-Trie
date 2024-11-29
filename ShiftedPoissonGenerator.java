@@ -25,10 +25,9 @@ public class ShiftedPoissonGenerator {
 
     public static void main(String[] args) {
         ShiftedPoissonGenerator generator = new ShiftedPoissonGenerator(6.94); // Mean word length
-
+        
         // Generate 20 word lengths
-        System.out.println("Generated Shifted Poisson Word Lengths:");
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 2000; i++) {
             System.out.println(generator.nextShiftedPoisson());
         }
     }

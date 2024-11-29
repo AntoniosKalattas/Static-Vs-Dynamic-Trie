@@ -9,11 +9,17 @@ public class Trie {
         this.node = new TrieNode();
     }
     	public class TrieNode{
+        // trienode array 4 bytes refenrecen *26 length.
+        private TrieNode childrenNodes[];
+        //int 7x4 ints.
         public final int numberOfLetters = 26;
         private int wordLength=0;
-        private TrieNode childrenNodes[];
         private int importance=1;
-        
+        //// Gia eksisoropoish mnimis me RB version.
+        int curentlyInside=0;
+        int size=0;
+        int a=0;
+        int b=0;
 
         public TrieNode(){
             childrenNodes = new TrieNode[numberOfLetters];

@@ -19,16 +19,15 @@
 
         public class TrieNode{          // 48 bytes
             private static final double LOAD_FACTOR_THRESHOLD = 0.9;
-            int wordLength=0;           
-            int size;
-            TrieNode array[];           // all of its sub-tries.
-            int currentlyInside=0;
-            int maxCollitions;
-            int importance =1;
             Element element;
-
-            static int totalObj = 0;
-            static int totalSize=0;
+            TrieNode array[];           // all of its sub-tries.
+            int wordLength=0;           // when word comes to an end.
+            int size;                   // size of the array.
+            int currentlyInside=0;      // counter to keep track, how many elemnts currently insed the array.
+            int maxCollitions;          // max number of collitions. To know how many 'hops' until you may found the letter.
+            int importance =1;          // how many times did a word got inser.
+            static int totalObj = 0;    // counters for calculating the total memory.
+            static int totalSize=0;     // >> >> >> >> >> >>> >> >> >> >> >> 
             
             
             public TrieNode(){
