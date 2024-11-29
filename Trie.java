@@ -1,4 +1,3 @@
-package trie;
 
 import java.util.Scanner;
 
@@ -96,11 +95,10 @@ public class Trie {
      }
      
     public static void main(String[] args){
+        var runtime = Runtime.getRuntime();
+
         Trie tr = new Trie();
-        Scanner scan = new Scanner(System.in);
-        while(scan.hasNextLine())
-            tr.insert(scan.next());
-        tr.display();
-        System.out.println("Total memory consumed"+cnt*232);
+        //tr.insert("okay");
+        System.out.println("Total memory consumed "+cnt*416);
     }
 }

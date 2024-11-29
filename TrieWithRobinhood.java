@@ -7,7 +7,7 @@
         TrieNode root = new TrieNode(-97,5);
         Heap heap = new Heap(25); /////////////////////////////////////////////////////////
         
-        public class Element{
+        public class Element{   // 8 bytes
             int data;                   //the charecter that represents.
             int offset;
 
@@ -17,7 +17,7 @@
             
         }
 
-        public class TrieNode{
+        public class TrieNode{          // 48 bytes
             private static final double LOAD_FACTOR_THRESHOLD = 0.9;
             int wordLength=0;           
             int size;
@@ -26,7 +26,9 @@
             int maxCollitions;
             int importance =1;
             Element element;
+
             static int totalObj = 0;
+            static int totalSize=0;
             
             
             public TrieNode(){
@@ -387,13 +389,14 @@
                         array[i].pushToHeap(word + (char)(array[i].element.data+'a'));
             }
 
-            public int calculateMemory(){
-                totalObj+=this.size;
+            public void calculateMemory(){
+                totalSize+=(this.size * 48);
                 for(int i=0;i<size;i++){
-                    if(array[i]!=null)
+                    if(array[i]!=null){
+                        totalObj++;
                         array[i].calculateMemory();
+                    }
                 }
-                return totalObj;
             }
         }
 
@@ -455,18 +458,17 @@
         }
         
         public void calculateMemory(){
-            int totalObjs = root.calculateMemory(); 
-            System.out.println(totalObjs);
+            root.calculateMemory(); 
+            System.out.printf( "%d\t \t \t%d",root.totalObj,root.totalSize);
         }
 
         public void pushToHeap(){
             root.pushToHeap("");
         }
         public static void main(String[] args){  
-            var runtime = Runtime.getRuntime();
-            var total  = runtime.totalMemory();
-            var free =runtime.freeMemory();
-            var usedMem = total-free;
-            System.out.printf("Total " + total + "\t free " + free + "\t usedMem: " + usedMem);
+            
+
+            //tr.calculateMemory();
+
         }
     }
