@@ -111,8 +111,19 @@ public class Heap {
 			}
 		}
 		
-	
+		public boolean stringExists(String word) {
+		    for (int i = 1; i <= this.arr[0].importance; i++) { 
+		        if (arr[i].word.equals(word)) {
+		            return true;
+		        }
+		    }
+		    return false;
+		}
 	public void insert(Thing thing) {
+		
+		if(stringExists(thing.word))
+			return;
+		
 		
 		if (this.arr[0].importance<this.arr.length-1)
 		{
