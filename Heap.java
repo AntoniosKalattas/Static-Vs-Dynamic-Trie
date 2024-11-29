@@ -1,4 +1,3 @@
-
 public class Heap {
 	
 	Thing arr[];
@@ -42,6 +41,7 @@ public class Heap {
 		for (int i = n / 2; i > 0; i--)
 		PercolateDown(A, n, i);
 		}
+	
 	
 	
 	
@@ -95,7 +95,19 @@ public class Heap {
 	
 	}
 		
-	
+	public void HeapSort() {
+	    Thing swap = new Thing("empty", 0); 
+	  
+	    for(int i=this.arr.length-1;i>1;i--)
+	    {
+	    	swap=arr[1];
+	    	arr[1]=arr[i];
+	    	arr[i]=swap;
+	        this.arr[0].importance--;
+	    	PercolateDown(this.arr,i-1,1);
+	    }
+	    System.out.println("Heap sort logic not implemented yet.");
+	}
 	public boolean isEmpty()
 	{
 		return this.arr[0]==null;
@@ -124,6 +136,8 @@ public class Heap {
 
 	    // Step 3: Display the contents of the heap
 	    System.out.println("Heap contents after 50 insertions:");
+	    heap.HeapSort();
+	    heap.displayHeapAsTree();
 	}
 
 }
