@@ -18,7 +18,8 @@ https://websites.umich.edu/~jlawler/wordlist.html?utm_source=chatgpt.com
 
 ### Trie Using RobinHood hashing
 
-```
 Total Memory Usage =  n x [(40 bytes + 20 bytes) +(12 bytes + (size x 4 bytes) ]
+> n: number ob trie nodes.
+> (40 bytes + 20 bytes) : (instance of trieNode) + (instace  of element)
 
-```
+
