@@ -3,7 +3,8 @@ import java.util.Scanner;
 
 public class Trie {
     TrieNode node;
-    static int cnt=0;
+    static int memory=0;
+    static int totalObjs=0;
     
     public Trie(){
         this.node = new TrieNode();
@@ -16,10 +17,6 @@ public class Trie {
         private int wordLength=0;
         private int importance=1;
         //// Gia eksisoropoish mnimis me RB version.
-        int curentlyInside=0;
-        int size=0;
-        int a=0;
-        int b=0;
 
         public TrieNode(){
             childrenNodes = new TrieNode[numberOfLetters];
@@ -39,7 +36,7 @@ public class Trie {
                 if(this.childrenNodes[letter]==null)
                 {
                     this.childrenNodes[letter] = new TrieNode();
-                    cnt++;
+                    totalObjs++;
                 }
                 this.childrenNodes[letter].insert(word, i + 1);
             }
@@ -99,12 +96,20 @@ public class Trie {
   
         return newWord;
      }
-     
+    public int calculateMemory(){
+        return totalObjs*32;
+    }
+    public static double bytesToMegabytes(double bytes) {
+        return bytes / (1024.0 * 1024.0);
+    }
     public static void main(String[] args){
-        var runtime = Runtime.getRuntime();
-
         Trie tr = new Trie();
+        Scanner scan = new Scanner(System.in);
+        while(scan.hasNext()){
+            tr.insert(scan.next());
+        }
+        System.out.println(tr.calculateMemory());
         //tr.insert("okay");
-        System.out.println("Total memory consumed "+cnt*416);
+        System.out.println(bytesToMegabytes((double)(tr.totalObjs*120)) +" MB       " + tr.totalObjs*120 + " bytes");
     }
 }

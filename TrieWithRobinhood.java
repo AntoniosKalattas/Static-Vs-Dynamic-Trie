@@ -1,9 +1,16 @@
     import java.util.ArrayList;
     import java.util.List;
+    import java.util.Scanner;
 
 
 
     public class TrieWithRobinhood {
+        private static final double LOAD_FACTOR_THRESHOLD = 0.9;
+        static int numberOfNodes = 1;    // counters for calculating the total memory.
+        static int totalSize=0;     // >> >> >> >> >> >>> >> >> >> >> >> 
+
+        //public static int MemmoryCalculatinFunction(int N)
+            
         TrieNode root = new TrieNode(-97,5);
         Heap heap = new Heap(20); /////////////////////////////////////////////////////////
         
@@ -18,7 +25,6 @@
         }
 
         public class TrieNode{          // 48 bytes
-            private static final double LOAD_FACTOR_THRESHOLD = 0.9;
             Element element;
             TrieNode array[];           // all of its sub-tries.
             int wordLength=0;           // when word comes to an end.
@@ -26,9 +32,6 @@
             int currentlyInside=0;      // counter to keep track, how many elemnts currently insed the array.
             int maxCollitions;          // max number of collitions. To know how many 'hops' until you may found the letter.
             int importance =1;          // how many times did a word got inser.
-            static int totalObj = 0;    // counters for calculating the total memory.
-            static int totalSize=0;     // >> >> >> >> >> >>> >> >> >> >> >> 
-            
             
             public TrieNode(){
                 element = new Element(0);
@@ -108,7 +111,8 @@
                 /// loop counters
                 int loopIndex = index;
                 int j=0;
-                while(j<=maxCollitions){
+
+                while(j<=maxCollitions+1){
                     // search trie in case the character exist.
                     if(array[loopIndex]!=null && array[loopIndex].element.data==word.charAt(i)-'a'){
                         index = loopIndex;
@@ -117,37 +121,24 @@
                     j++;
                     loopIndex=(loopIndex+1)%size;
                 }
-                if(!exist){                                                // if the character does not exist.
-                    this.currentlyInside++;                                // increase the counter that countrs how many letters are inside.
-
+                if(!exist){                                                 // if the character does not exist.
+                    this.currentlyInside++;                                 // increase the counter that countrs how many letters are inside.
                     if((double) currentlyInside/size>LOAD_FACTOR_THRESHOLD){    // if by inserting this letter we will pass the LFT that means we need to refactor and then reHash().
                         reHash();
                     }  
+
                     index = (word.charAt(i)-'a') % size;                        // re-calculate the index that we need to position the new element.
                     while(array[index]!=null){                                    // loop until you find a null position. because then we will just assing the new element there.
-                        //probablty remove it . 
-                        //if(array[index].element.data==(word.charAt(i)-'a')){                //////////////////////////////////////////////////////////----------------------------------------------------------------------probably remove it.
-                        //    exist=true;
-                        //    break;
-                        //}
                         if(array[index].element.offset<temp.element.offset){                    // if the current inside elemnt has a bigger offset than the one that we are moving aroung -> swap them and start moving that around the array until you find a null pointer.
                             if(!swap){                                          // if its the first time you are swaping, store that index, in the saveindex because in the nest recursive call you need to go from there.
                                 swap=true;
                                 savedIndex=  index;
                                 savedOffset= element.offset;
                             }
-                            //System.out.println("about to swap the letter: " + (char)(array[index].data+'a') + " with the letter: " + (char)(temp.data+'a'));
                             // swaping procedure.
                             TrieNode tempNode = deepCopy(array[index]);
                             array[index] = deepCopy(temp);
                             temp = deepCopy(tempNode);
-
-                            //System.out.println("array: "+array[index].data);
-                            //System.out.println(temp.data);
-                            //System.out.println();
-
-
-                            //System.out.println("now I hold the letter: " + (char)(temp.data+'a'));
                         }
                         
                         index=(index+1)%size;                             // increase the index++.
@@ -155,32 +146,22 @@
                         if(temp.element.offset>maxCollitions)                    // check if the currently object offset is bigger than the maxCollition .
                             maxCollitions=temp.element.offset;
                     }
-                    
                     array[index] = deepCopy(temp);                        // because array[index] is a null position, that means we need to assing it to the  element we moved arround.
                 } 
                 if(swap==false)                                          // if we didn't swap the elements that means the index!=0 and savedIndex =0. so we need to make savedIndex = index.
                     savedIndex = index;
-                //System.out.println("-------------------------------------------MaxCol: "+ maxCollitions);
-                //if(!exist){    ///////--------------------------------------------------------------------------------------------------------------------probably remove.
-                //    array[savedIndex] = new TrieNode(word.charAt(i)-'a',5);
-                //    array[savedIndex].element.offset = savedOffset;
-                //}
                 array[savedIndex].insert(word,i+1, exist & existingWord);    // recursive call to the savedIndex. where the new insertion occure.
             }
             // if the items inside the array reach the load factor, it will rehash the table into an array that has 3 more extra spaces.
             public void reHash(){
                 int newSize=0;
-
                 if(size==5) 
                     newSize =11;
                 if(size==11)
                     newSize = 19;
                 if(size==19)
                     newSize = 29; 
-                if(size>29)
-                    newSize = size+5;
                 //used for debug DO NOT DELETE
-                System.out.println("---------------------------------------------------------------------------------------------------------------reHashing  : " + newSize);
 
                 TrieNode newArray[] = new TrieNode[newSize];
                 //deep copy for all the element in the array.
@@ -188,8 +169,26 @@
                     if(this.array[i]!=null){
                         int letter = array[i].element.data;
                         int newPosition = letter % newSize;
-                        newArray[newPosition] = new TrieNode();
-                        newArray[newPosition] = deepCopy(array[i]);
+                        if(newArray[newPosition]==null){
+                            newArray[newPosition] = new TrieNode();
+                            newArray[newPosition] = deepCopy(array[i]);
+                        }
+                        else{
+                            while(newArray[newPosition]!=null){                                    // loop until you find a null position. because then we will just assing the new element there.
+                                if(newArray[newPosition].element.offset<array[i].element.offset){  // if the current inside elemnt has a bigger offset than the one that we are moving aroung -> swap them and start moving that around the array until you find a null pointer.                                    
+                                    TrieNode tn = deepCopy(newArray[newPosition]);
+                                    newArray[newPosition] = deepCopy(array[i]);
+                                    array[i]= deepCopy(tn);
+                                }
+                                newPosition=(newPosition+1)%newSize;
+                                array[i].element.offset++;
+                            }   
+                            if(array[i].element.offset>=maxCollitions)
+                                maxCollitions = array[i].element.offset;
+                            newArray[newPosition] = new TrieNode();
+                            newArray[newPosition] = deepCopy(array[i]);
+
+                        }
                     }
                 }
                 this.size = newSize;
@@ -204,16 +203,6 @@
                     return this;
                 int position = (word.charAt(i)-'a') % size;     // get the index where we should start looking for.
                 boolean flag = false;                       
-                // USED FOR DEBBUGING DO NOT DELETE
-                //System.out.println("maxCollitions: "+ maxCollitions + "index is ; "+ position + " for charater: "+ ( word.charAt(i) - 'a') + " and size is: "+ this.size);
-                //if(array[position]!=null)
-                //System.out.println((char)(array[position].data + 'a'));
-                //for(int g=0;g<size;g++){
-                //    if(array[g]==null)
-                //        System.err.print(" null ");
-                //    else
-                //        System.out.print(" "+(char)(array[g].data + 'a'));
-                //}
                 int j=position;                                 // counters used for the loop.
                 int x=0;                                        // counters used fot the loop.
                 while(x<= maxCollitions){                        // loop for all possible collitions.
@@ -391,10 +380,10 @@
             }
 
             public void calculateMemory(){
-                totalSize+=(this.size * 48);
+                totalSize+= (64 + (12+(size*4)));
                 for(int i=0;i<size;i++){
                     if(array[i]!=null){
-                        totalObj++;
+                        numberOfNodes++;
                         array[i].calculateMemory();
                     }
                 }
@@ -410,7 +399,8 @@
                 return;
             String filterdWord = filter(word.toLowerCase());
             //System.out.println(filterdWord);
-            root.insert(filterdWord, 0,true);       
+            root.insert(filterdWord, 0,true);   
+            //display();
         }
 
         public boolean search(String lookingFor){
@@ -460,7 +450,8 @@
         
         public void calculateMemory(){
             root.calculateMemory(); 
-            System.out.printf( "%d\t \t \t%d",root.totalObj,root.totalSize);
+            System.out.printf( "Number of Nodes: %d(+1)\t \t \tTotal size: %d  \t \t \t \t totalUsed Memory: %d\n",(numberOfNodes)-1,totalSize,0);
+            System.out.printf("Converted to MB: %f", bytesToMegabytes((double)(totalSize)));
         }
 
         public void pushToHeap(){
@@ -470,10 +461,36 @@
         public void displayHeap(){
             heap.displayHeapAsTree();
         }
+
+        public double bytesToMegabytes(double bytes) {
+            return bytes / (1024.0 * 1024.0);
+        }
         public static void main(String[] args){  
-            
-
-            //tr.calculateMemory();
-
+            TrieWithRobinhood tr = new TrieWithRobinhood();
+            Scanner scan  = new Scanner(System.in);
+//
+            while(scan.hasNext()){
+                tr.insert(scan.next());
+            }
+            //tr.display();
+            //
+            tr.calculateMemory();
+            //scan.close();
+            //tr.insert("A");
+            //tr.insert("B");
+            //tr.insert("C");
+            //tr.insert("D");
+            //tr.display();
+            //tr.insert("M");
+            //tr.insert("E");
+            //tr.display();   
+            //tr.insert("F");
+            //tr.insert("G");
+            //tr.insert("X");
+            //tr.insert("O");
+            //tr.display();
+            tr.insert("okay");
+            tr.calculateMemory();
+            //System.out.println(tr.root.maxCollitions);
         }
     }

@@ -450,10 +450,9 @@ public class testingTrieWithRH {
         trie.prothemaWithSizeTolerance("plan");
         trie.displayHeap();
         System.out.println();
-////
-////
-        //trie.prothema("plan");
-        //trie.displayHeap();
+
+        trie.prothema("plan");
+        trie.displayHeap();
         
     }
 }

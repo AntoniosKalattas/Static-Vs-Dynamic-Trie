@@ -20,8 +20,14 @@ public class RandomStringGenerator {
 		
 		public static void main(String[]args){
 			ShiftedPoissonGenerator generator = new ShiftedPoissonGenerator(6.94); // Mean word length
-			for(int i=0;i<100;i++){
+
+			// For random length words.
+			for(int i=0;i<1000000;i++){
 				System.out.println(WordGenerator(generator.nextShiftedPoisson()));
+			}
+			// For length 8 words
+			for(int i=0;i<1000000;i++){
+				System.out.println(WordGenerator(8));
 			}
 		}
 }

@@ -62,38 +62,30 @@ public class Heap {
 		    }
 		    return false;
 		}
-	public void insert(Thing thing) {
-		
+	public void insert(Thing thing){
 		if(stringExists(thing.word))
 			return;
 		
-		
-		if (this.arr[0].importance<this.arr.length-1)
-		{
+		if(this.arr[0].importance<this.arr.length-1){
 			
-		int index = this.arr[0].importance + 1;
-		while (index > 1 && this.arr[(index / 2)].importance >thing.importance) {
-		this.arr[index].importance=this.arr[(index / 2)].importance;
-		this.arr[index].word=this.arr[(index / 2)].word;
+			int index = this.arr[0].importance + 1;
+			while (index > 1 && this.arr[(index / 2)].importance >thing.importance){
+			this.arr[index].importance=this.arr[(index / 2)].importance;
+			this.arr[index].word=this.arr[(index / 2)].word;
 
-		index = index / 2;
+			index = index / 2;
 		}
 		this.arr[index]=thing;
 		this.arr[0].importance++;
 		
 		}
-		
-		else if(this.arr[0].importance==arr.length-1) 
-		{
-			if(thing.importance>arr[1].importance)
-			{
+		else if(this.arr[0].importance==arr.length-1) {
+			if(thing.importance>arr[1].importance){
 				arr[1]=thing;
 				PercolateDown(this.arr,this.arr[0].importance,1);
 				
 			}
 		}
-		
-	
 	}
 		
 	public void HeapSort() {
