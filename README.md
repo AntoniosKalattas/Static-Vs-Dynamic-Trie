@@ -21,7 +21,7 @@ https://websites.umich.edu/~jlawler/wordlist.html?utm_source=chatgpt.com
 
 **Instance of TrieNode**: (5x4 int) + (2x4 byte references) + 12 byte header = **40 bytes**
 
-**Total Memory Usage** = nx[(Instance of Element + Instance of TrieNode) + (12 bytes + (arraySize x 4 bytes)]  = n x [(40 bytes + 24 bytes) +(12 bytes + (size x 4 bytes) ]
-> n: number ob trie nodes.
+**Total Memory Usage** = N x [(Instance of Element + Instance of TrieNode) + (12 bytes + (arraySize x 4 bytes)]  = N x [(40 bytes + 24 bytes) +(12 bytes + (size x 4 bytes) ]
+> N: number ob trie nodes.
 
 
