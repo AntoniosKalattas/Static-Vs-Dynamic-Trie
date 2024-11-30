@@ -5,7 +5,7 @@
 
     public class TrieWithRobinhood {
         TrieNode root = new TrieNode(-97,5);
-        Heap heap = new Heap(5); /////////////////////////////////////////////////////////
+        Heap heap = new Heap(20); /////////////////////////////////////////////////////////
         
         public class Element{   // 8 bytes
             int data;                   //the charecter that represents.

@@ -47,6 +47,7 @@ public class Heap {
 	
 	
 		public void displayHeapAsTree() {
+			this.HeapSort();
 			for(int i=1;i<arr.length;i++){
 				if(arr[i].importance!=-1)
 				System.out.printf ("%s [%d]\n",arr[i].word,arr[i].importance);
@@ -97,8 +98,9 @@ public class Heap {
 		
 	public void HeapSort() {
 	    Thing swap = new Thing("empty", 0); 
-	  
-	    for(int i=this.arr.length-1;i>1;i--)
+		int p =  this.arr[0].importance;
+
+	    for(int i=p;i>1;i--)
 	    {
 	    	swap=arr[1];
 	    	arr[1]=arr[i];
