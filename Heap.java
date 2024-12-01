@@ -100,7 +100,6 @@ public class Heap {
 	        this.arr[0].importance--;
 	    	PercolateDown(this.arr,i-1,1);
 	    }
-	    System.out.println("Heap sort logic not implemented yet.");
 	}
 	public boolean isEmpty()
 	{

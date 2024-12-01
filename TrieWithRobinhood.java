@@ -268,9 +268,11 @@
             }
 
             public void prothemaWithTolerance(String word, int i, String proth, int misses){
+                if(misses>2)
+                    return;
                 if(i==word.length()){
-                    if(wordLength!=0){
-                        //System.out.println("Found word: " +proth + " importance is: " + importance);
+                    if(proth.length()==word.length() && wordLength!=0){
+                        //System.out.println("Found word: " +proth + " importance is: " + importance + " word length " + proth.length() + " "+this.wordLength + " w " + word.length());
                         Heap.Thing thing = heap.new Thing(proth, importance);
                         heap.insert(thing);
                     }
@@ -457,15 +459,22 @@
             System.out.printf("Converted to MB: %f", bytesToMegabytes((double)(totalMemory)));
         }
 
-        public void pushToHeap(int k){
+        public void pushToHeap(int k){ // Will push the most important words into words. Used when we want to fidn the most importance word, in a text.
             heap = new Heap(k);
             root.pushToHeap("");
-            displayHeap();
+            heap.displayHeapAsTree();            
         }
 
-        public void displayHeap(){
+        public void pushRecommendedWordToHeap(int k, String word){
+            this.heap = new Heap(k);
+            prothema(word);
+    
+            prothemaWithTolerance(word);
+
+            prothemaWithSizeTolerance(word);
             heap.displayHeapAsTree();
         }
+
 
         public double bytesToMegabytes(double bytes) {
             return bytes / (1024.0 * 1024.0);
