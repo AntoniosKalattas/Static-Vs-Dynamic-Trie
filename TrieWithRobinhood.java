@@ -450,8 +450,9 @@
         
         public void calculateMemory(){
             root.calculateMemory(); 
-            System.out.printf( "Number of Nodes: %d(+1)\t \t \tTotal size: %d  \t \t \t \t totalUsed Memory: %d\n",(numberOfNodes)-1,totalSize,0);
-            System.out.printf("Converted to MB: %f", bytesToMegabytes((double)(totalSize)));
+            double totalMemory = totalSize;
+            System.out.printf( "Number of Nodes: %d(+1)\t \t \tTotal size: %.2f \n",(numberOfNodes)-1,totalMemory);
+            System.out.printf("Converted to MB: %f", bytesToMegabytes((double)(totalMemory)));
         }
 
         public void pushToHeap(){
@@ -467,30 +468,26 @@
         }
         public static void main(String[] args){  
             TrieWithRobinhood tr = new TrieWithRobinhood();
+            //** Calculate the memory for the given .txt fiel */
             Scanner scan  = new Scanner(System.in);
-//
             while(scan.hasNext()){
                 tr.insert(scan.next());
             }
-            //tr.display();
-            //
             tr.calculateMemory();
-            //scan.close();
+            scan.close();
+            /*********************************************************************************** */
+
             //tr.insert("A");
             //tr.insert("B");
             //tr.insert("C");
             //tr.insert("D");
-            //tr.display();
-            //tr.insert("M");
             //tr.insert("E");
-            //tr.display();   
             //tr.insert("F");
             //tr.insert("G");
             //tr.insert("X");
             //tr.insert("O");
-            //tr.display();
-            tr.insert("okay");
-            tr.calculateMemory();
-            //System.out.println(tr.root.maxCollitions);
+            //tr.insert("AntoniosKalattas");
+            //tr.calculateMemory();
+            //System.out.println();
         }
     }
