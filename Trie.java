@@ -110,6 +110,6 @@ public class Trie {
         }
         System.out.println(tr.calculateMemory());
         //tr.insert("okay");
-        System.out.println(bytesToMegabytes((double)(tr.totalObjs*120)) +" MB       " + tr.totalObjs*120 + " bytes");
+        System.out.println(bytesToMegabytes((double)(tr.totalObjs*112)) +" MB       " + tr.totalObjs*120 + " bytes");
     }
 }
