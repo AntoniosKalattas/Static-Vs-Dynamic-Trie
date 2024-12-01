@@ -29,3 +29,11 @@ https://websites.umich.edu/~jlawler/wordlist.html?utm_source=chatgpt.com
 **Instance of TrieNode:** 12 bytes (3x4 byes int) + 4 bytes (children reference)  + 12 byte (header) = 28 bytes = 28 bytes.
 
 **Total Memory Usage:** 26x
+
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/DynamicTrie.png)
+
+***
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticTrie.png)
+
+***
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/DynamicVsStatic.png)
