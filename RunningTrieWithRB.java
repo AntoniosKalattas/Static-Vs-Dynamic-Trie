@@ -23,23 +23,20 @@ public class RunningTrieWithRB{
             System.exit(10);
         }
         ////////////////////////
-        System.out.println("1  -> for display");
-        System.out.println("2  -> Find Similar");
-        System.out.println("3  -> Most important words");
+        System.out.println("1  -> Find Similar");
+        System.out.println("2  -> Most important words");
 
         int choice  = scan.nextInt();
         if(choice==1){
-            tr.display();
-        }
-        if(choice==2){
             while(true){
                 System.out.println("please give k and then word");
                 tr.pushRecommendedWordToHeap(scan.nextInt(), scan.next());
             }
         }
-        if(choice==3){
+        if(choice==2){
                 System.out.println("please give k:");
                 tr.pushToHeap(scan.nextInt());
         }
+        scan.close();
     }
 }
