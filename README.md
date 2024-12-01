@@ -10,6 +10,7 @@ https://websites.umich.edu/~jlawler/wordlist.html?utm_source=chatgpt.com
 ***
 
 # Random Word Generator 
+Our generator produces lengths that follow the **shifted Poisson** distribution.
 ![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/Histogram_%20length%20of%20each%20word-2.png)
 
 ***
