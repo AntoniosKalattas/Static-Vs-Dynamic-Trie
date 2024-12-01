@@ -1,6 +1,7 @@
 public class Heap {
 	
 	Thing arr[];
+	//Heap constructor taking as input the number of optios for autocorrect
 	public Heap(int k){
 		arr=new Thing[k+1];
 		this.arr[0]=new Thing("CurrentSize",0);
@@ -8,6 +9,7 @@ public class Heap {
 			this.arr[i]=new Thing("",-1);
 
 	}
+	//Thing inner class to represent the autocorrecting options with their corisponding importance 
 	public class Thing{
 		String word;
 		int importance;
@@ -18,6 +20,9 @@ public class Heap {
 		}
 
 	}
+
+	/*Standard Percolate down method that puts an element that violates the heaps
+	property to it's correct positon*/
 	public static void PercolateDown(Thing A[], int n, int i) {
 	    Thing temp = A[i]; // Store the element to be moved down
 	    int j;
@@ -36,7 +41,8 @@ public class Heap {
 	    A[i] = temp; // Place the original element in its correct position
 	}
 
-
+	//rearenges an array so that it qualifys as a heap
+	 
 	public static void BuildHeap(Thing A[], int n) {
 		for (int i = n / 2; i > 0; i--)
 		PercolateDown(A, n, i);
@@ -45,7 +51,7 @@ public class Heap {
 	
 	
 	
-	
+		//method to display the heap as a trie
 		public void displayHeapAsTree() {
 			this.HeapSort();
 			for(int i=1;i<arr.length;i++){
@@ -53,7 +59,7 @@ public class Heap {
 				System.out.printf ("%s [%d]\n",arr[i].word,arr[i].importance);
 			}
 		}
-		
+		//method that locates if a word is already inside the heap so we don't insert duplicates
 		public boolean stringExists(String word) {
 		    for (int i = 1; i <= this.arr[0].importance; i++) { 
 		        if (arr[i].word.equals(word)) {
@@ -62,11 +68,12 @@ public class Heap {
 		    }
 		    return false;
 		}
+	
 	public void insert(Thing thing){
-		if(stringExists(thing.word))
+		if(stringExists(thing.word))//if the word to be inserted already exists return
 			return;
 		
-		if(this.arr[0].importance<this.arr.length-1){
+		if(this.arr[0].importance<this.arr.length-1){//when the elements that are currently inside are <k
 			
 			int index = this.arr[0].importance + 1;
 			while (index > 1 && this.arr[(index / 2)].importance >thing.importance){
@@ -79,6 +86,7 @@ public class Heap {
 		this.arr[0].importance++;
 		
 		}
+		//logic for when the heap is already full algorithm to compare the root with the element to be inserted
 		else if(this.arr[0].importance==arr.length-1) {
 			if(thing.importance>arr[1].importance){
 				arr[1]=thing;

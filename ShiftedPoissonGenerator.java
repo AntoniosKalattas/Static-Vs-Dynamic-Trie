@@ -1,6 +1,5 @@
 import java.util.Random;
-
-public class ShiftedPoissonGenerator {
+public class ShiftedPoissonGenerator {  //object meant to simulate our distribution
     private final double lambda; // Mean of the distribution
     private final Random rand;
 

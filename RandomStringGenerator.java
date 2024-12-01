@@ -1,5 +1,6 @@
 import java.util.Random;
 public class RandomStringGenerator {
+		//takes the length and returns a randomly generated String
 		public static String WordGenerator(int length)
 		{
 			String characters="abcdefghijklmnopqrstuvwxyz";
@@ -7,9 +8,11 @@ public class RandomStringGenerator {
 			char [] ch=new char[length];
 			for(int i=0;i<length;i++)
 			{
-				ch[i]=characters.charAt(rand.nextInt(characters.length()));
+				//gemerates a random string from 0-characters.length
+				ch[i]=characters.charAt(rand.nextInt(characters.length()));//gemerates a random string from 0-characters.length
 			}
 			String randomString ="";
+			//concatenation logic from the array of characters to a string
 			for(int i=0;i<ch.length;i++)
 			{
 				randomString+=ch[i];
