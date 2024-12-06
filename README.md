@@ -59,6 +59,18 @@ Our generator produces lengths that follow the **shifted Poisson** distribution.
 #### Static Vs Dynamic Length 8, input>100K
 ![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength20Big.png)
 
+## Conclusion
+##### Dynamic Version:
+It is observed that memory management is efficient, but as the number of words increases, more memory is required.
+
+##### Static Version:
+It is observed that as the number of words increases, slightly less memory is required. However, it still uses more memory overall compared to the dynamic version.
+
+##### Effect of Word Length:
+The experiment shows that word length plays a significant role in memory usage. If the words are shorter, there are more common prefixes, which consequently lead to reduced memory usage.
+
+##### Overall:
+We conclude that regardless of the size of each word or the number of words, the dynamic implementation is always better than the static one in terms of memory usage.
 
 
 
