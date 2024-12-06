@@ -28,12 +28,40 @@ Our generator produces lengths that follow the **shifted Poisson** distribution.
 ### Trie Static (Simple)
 **Instance of TrieNode:** 12 bytes (3x4 byes int) + 4 bytes (children reference)  + 12 byte (header) = 28 bytes = 28 bytes.
 
-
-
-![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/DynamicTrie.png)
-
 ***
-![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticTrie.png)
 
-***
-![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/DynamicVsStatic.png)
+#### Dyanmic Trie Implementation
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/DynamicTrieV2.png)
+
+
+#### Static Trie Implementation
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticTrieV2.png)
+
+
+#### Static Vs Dynamic for random length words
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicRandom.png)
+
+#### Static Vs Dynamic lenght 4
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength4.png)
+
+### Static Vs Dynamic length 8
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength8.png)
+
+### Static Vs Dynamic length 12
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength12.png)
+
+#### Static Vs Dynamic Length 20
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength20.png)
+
+#### Static Vs Dynamic Length 20
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength20.png)
+
+#### Static Vs Dynamic Length 8, input>700K
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength8Big.png)
+
+
+
+
+
+
+
