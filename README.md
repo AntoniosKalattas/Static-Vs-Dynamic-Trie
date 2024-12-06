@@ -53,12 +53,11 @@ Our generator produces lengths that follow the **shifted Poisson** distribution.
 #### Static Vs Dynamic Length 20
 ![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength20.png)
 
-#### Static Vs Dynamic Length 20
-![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength20.png)
-
-#### Static Vs Dynamic Length 8, input>700K
+#### Static Vs Dynamic Length 8, input>100K
 ![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength8Big.png)
 
+#### Static Vs Dynamic Length 8, input>100K
+![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/StaticVsDynamicLength20Big.png)
 
 
 
