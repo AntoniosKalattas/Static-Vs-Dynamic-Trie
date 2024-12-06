@@ -28,7 +28,7 @@ Our generator produces lengths that follow the **shifted Poisson** distribution.
 ### Trie Static (Simple)
 **Instance of TrieNode:** 12 bytes (3x4 byes int) + 4 bytes (children reference)  + 12 byte (header) = 28 bytes = 28 bytes.
 
-**Total Memory Usage:** 26x
+
 
 ![alt text](https://github.com/AntoniosKalattas/epl231/blob/main/img/DynamicTrie.png)
 
