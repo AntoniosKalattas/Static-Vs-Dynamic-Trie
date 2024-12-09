@@ -1,2 +1,0 @@
-Number of Nodes: 30044(+1)	 	 	Total size: 4981056  	 	 	 	 totalUsed Memory: 0
-Converted to MB: 4.750305
